@@ -478,7 +478,7 @@ footer{margin-top:28px;font-size:13px;color:var(--ink-2);text-align:center}
     {"id":"chores","type":"multi","max":3,"kicker":"A little venting","title":"Which parts of creative life would you happily never do again?","hint":"Pick up to 3. We all have them.","layout":"two","short":"Chores creators would hand off","options":[["admin","Invoicing, scheduling & email"],["promo","Posting, marketing & growing an audience"],["production","Editing, formatting & technical work"],["friction","Research, getting started & creative blocks"],["bizdev","Finding clients, pitching & negotiating"],["none","Honestly? I love all of it"]],"exclusive":["none"]},
     {"id":"guess","type":"people","kicker":"Your best guess","title":"Just a hunch: Out of 10 creative people you know, how many do you think use AI somewhere in their creative work?","hint":"No need to know for sure. Tap a person or drag the slider.","short":"Your guess"},
     {"id":"feel","type":"feel","kicker":"Vibe check","title":"When AI comes up in creative circles, you feel…","hint":"Pick the one that fits best.","short":"How creators feel","options":[["giddy","Giddy — I'm fascinated. Tell me everything."],["curious","Curious — I'm interested, but still figuring it out."],["torn","Torn — Part of me loves it; part of me has reservations."],["mute","On Mute — I tune out when AI comes up. I'm just not interested in the conversation."],["overit","Over It — I'm actively tired of hearing about AI. Can we talk about literally anything else?"]]},
-    {"id":"uses","type":"multi","check":"circle","layout":"two","kicker":"No-judgment zone","title":"Where does AI show up in your work today?","hint":"Pick all that apply.","short":"Where creators use AI","options":[["brainstorm","Brainstorming and ideation"],["research","Research and learning"],["writing","Writing and editing"],["visual","Visual creation and design"],["music","Music and audio"],["video","Video and animation"],["coding","Coding and technical work"],["marketing","Marketing and audience growth"],["ops","Business operations and administration"],["feedback","Feedback and critique"],["none","I don't use AI in my creative work"]],"exclusive":["none"]},
+    {"id":"uses","type":"multi","check":"circle","layout":"two","kicker":"No-judgment zone","title":"Where does AI show up in your work today?","hint":"Pick all that apply.","short":"Where creators use AI","options":[["brainstorm","Brainstorming and generating ideas"],["research","Research and gathering information"],["writing","Writing and drafting"],["editing","Editing and revising written work"],["visual","Visual design and image creation"],["video","Video editing"],["animation","Animation and motion graphics"],["music","Music creation and production"],["audio","Audio editing and enhancement"],["feedback","Feedback, critique, and reviewing work"],["marketing","Marketing, promotion, and audience growth"],["ops","Business operations and administrative tasks"],["other","Something else"],["none","I don't use AI in my work"]],"exclusive":["none"]},
     {"id":"talk","type":"chatter","kicker":"Group chat check","title":"How often do you hear creative friends openly talk about how they're actually using AI?","hint":"Tap one and peek at the group chat.","short":"How often friends talk openly about their AI use","options":[["never","Never"],["rarely","Rarely"],["sometimes","Sometimes"],["often","Often"],["constantly","Constantly"]]},
     {"id":"hesitation","type":"multi","max":3,"exclusive":["none"],"kicker":"Real talk","title":"What are your biggest hesitations, if any, when using AI in creative work?","hint":"Pick up to 3.","short":"Biggest hesitation","options":[["quality","It doesn't produce work that's good enough."],["personal","It makes creative work feel less personal or original."],["copyright","I'm worried about copyright, ownership, or compensation."],["training","I'm uncomfortable with how AI models are trained."],["perception","I'm worried about how audiences or other creatives will perceive me."],["reliability","I don't trust the accuracy or reliability of AI."],["dependence","I'm worried about becoming dependent on it."],["value","It feels like it undermines the value of human creativity."],["none","I don't really have any hesitations."],["other","Something else."]]},
     {"id":"line","type":"ladder","kicker":"Boundaries","title":"Where's your line? AI is fine for…","hint":"Tap the last thing you're okay with. Everything above it counts too.","short":"Where creators draw the line","options":[["none","Nothing. I will never use it."],["personal","Personal use, outside of work"],["around","Okay for work, if it's the business stuff around the art"],["process","Behind-the-scenes parts of the creative process, never the final piece"],["final","Parts of the final piece, if it's disclosed"],["anything","Whatever makes the work better"]]},
@@ -518,7 +518,8 @@ var ON_LIVE_HOST = CONFIG.liveHosts.indexOf(location.hostname) >= 0;
 var DATA = JSON.parse(document.getElementById("survey-data").textContent);
 var Q = DATA.questions, STATUSES = DATA.statuses;
 /* Activity zones for Q6. "Around the work" is support and business; the other two touch the creative work itself. */
-var AROUND = ["research","coding","marketing","ops"], PROCESS = ["brainstorm","feedback"], MAKING = ["writing","visual","music","video"];
+var AROUND = ["research","marketing","ops"], PROCESS = ["brainstorm","feedback"], MAKING = ["writing","editing","visual","video","animation","music","audio"];
+/* "other" counts as AI use but sits in no zone and is not counted as creative. */
 var STORE_KEY = "yrwai_v2";
 
 var app = document.getElementById("app");
@@ -633,7 +634,7 @@ function sampleRows(){
   function pick(weights){ var keys=Object.keys(weights), t=0, s=0; keys.forEach(function(k){t+=weights[k];}); var x=rnd()*t; for(var i=0;i<keys.length;i++){ s+=weights[keys[i]]; if(x<=s) return keys[i]; } return keys[0]; }
   function some(weights, max){ var out=[]; Object.keys(weights).forEach(function(k){ if(rnd()<weights[k]) out.push(k); }); return max? out.slice(0,max): out; }
   var rows=[];
-  var ACTS = {brainstorm:.5,research:.55,writing:.4,visual:.2,music:.1,video:.18,coding:.15,marketing:.35,ops:.45,feedback:.2};
+  var ACTS = {brainstorm:.5,research:.55,writing:.4,editing:.35,visual:.2,video:.18,animation:.08,music:.1,audio:.2,feedback:.2,marketing:.35,ops:.45,other:.05};
   for (var i=0;i<42;i++){
     var a={};
     a.medium = some({visual:.3,shortvideo:.35,longvideo:.25,written:.25,podcast:.15,photo:.18,music:.25,writing:.2,design:.15,other:.05},3); if(!a.medium.length) a.medium=["visual"];
@@ -907,9 +908,9 @@ function wireQuestion(q){
 /* ---------- interactive question widgets ---------- */
 var CHAT = {
   "": [["l","new piece is finally done 🎨"],["r","OBSESSED"],["sys","tap an answer below 👇"]],
-  never: [["l","new piece is finally done 🎨"],["r","OBSESSED. framing it?"],["l","gallery thing friday?"],["sys","Nobody here has ever said how they actually use AI."]],
-  rarely: [["l","new piece is finally done 🎨"],["r","obsessed"],["l","random but… does anyone actually use AI for invoices? 👀"],["r","…anyway, friday?"]],
-  sometimes: [["l","ngl I used AI to untangle my grant app"],["r","wait same, for captions"],["l","never for the actual art tho"],["r","obviously 💅"]],
+  never: [["l","new piece is finally done 🎨"],["r","OBSESSED. are you framing it??"],["l","gold frame. very dramatic. very me 😌"],["sys","Nobody here has ever said how they actually use AI."]],
+  rarely: [["l","new video is finally done 🎬"],["l","random but has anyone used AI to create captions?"],["r","I tried it once but it wasn't good. wait the video is amazing 😍"]],
+  sometimes: [["l","ngl I used AI to find a venue for my next show 🔍"],["r","wait same, I had it find filming locations last week"],["l","ok did it actually work??"],["r","half the spots were closed lol but two were perfect 😅"]],
   often: [["l","how are you all using AI for editing rn?"],["r","transcripts. saves me hours"],["l","I brainstorm with it, then sketch myself"],["r","stealing that"]],
   constantly: [["l","ok AI workflow swap, go"],["r","brainstorm → my sketch → AI cleanup"],["l","mine's research → draft → AI critique"],["r","we talk about our AI setups more than art now 😭"]]
 };
@@ -1121,8 +1122,8 @@ var RECAP = {
           torn: "You’re Torn, which is the most honest feeling a person can have. Growth.",
           mute: "You tune out the second AI comes up, which is honestly a power move.",
           overit: "You’re Over It, and you said it with your whole chest. Respect." },
-  acts: { brainstorm: "brainstorming", research: "research", writing: "writing and editing", visual: "visuals", music: "music", video: "video",
-          coding: "code", marketing: "marketing", ops: "admin", feedback: "feedback" },
+  acts: { brainstorm: "brainstorming", research: "research", writing: "writing", editing: "editing", visual: "visuals", video: "video editing",
+          animation: "animation", music: "music", audio: "audio", feedback: "feedback", marketing: "marketing", ops: "admin", other: "something else" },
   talk: { never: "and your creative friends never talk about it, so everyone is being extremely mysterious.",
           rarely: "and it barely comes up with your creative friends, so everyone is being extremely mysterious.",
           sometimes: "and it comes up with your friends sometimes, which feels healthy? I think?",
