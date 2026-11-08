@@ -19,7 +19,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
 <style>
 /* Layout: one centered column like flipping through early-2000s IM windows and profile cards; results scroll as a stack of tinted, sticker-y panels.
    Two themes: "faded analog" (light, default) and "late-night chat room" (dark). Dark follows the system unless the toggle picks one. */
@@ -107,6 +107,9 @@ button{font:inherit;color:inherit}
 /* --- Intro --- */
 .intro{display:grid;gap:22px;padding-top:10px}
 .intro h1{font-size:clamp(44px, 11vw, 76px);font-weight:800}
+/* subheading: an upright, slightly techy grotesk, smaller than the title, in cobalt with a soft marker swipe */
+.intro-sub{margin-top:-8px;font:600 clamp(18px, 4.6vw, 22px)/1.25 "Space Grotesk", "Avenir Next", system-ui, sans-serif;color:var(--cobalt);letter-spacing:.005em;text-wrap:balance}
+.intro-sub::after{content:"";display:block;width:4.2em;height:6px;margin-top:6px;border-radius:3px;background:var(--hilite);opacity:.9}
 .intro h1 em{font-style:normal;color:var(--tomato);background:linear-gradient(transparent 62%, var(--hilite) 62%, var(--hilite) 92%, transparent 92%);padding:0 .06em}
 .lede{font-size:18px;color:var(--ink-2);max-width:34em}
 .promises{display:grid;gap:10px;margin:0;padding:16px 18px;list-style:none;background:var(--frost);border:1.5px solid var(--line);border-radius:18px}
@@ -164,7 +167,7 @@ button{font:inherit;color:inherit}
 .opt[aria-pressed="true"] .box::after{content:"";width:6px;height:10px;border:solid var(--surface);border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
 .opt.radio[aria-pressed="true"] .box::after{width:8px;height:8px;border:0;border-radius:50%;background:var(--surface);transform:none}
 .opt:disabled{opacity:.4;cursor:not-allowed}
-.at-max .opt[aria-pressed="false"]:not([data-id="none"]){opacity:.5}
+.at-max .opt[aria-pressed="false"]:not([data-id="none"]):not([data-id="notyet"]){opacity:.5}
 .max-note{min-height:1.4em;margin-top:12px;font:600 14px/1.35 var(--body);color:var(--heart)}
 .max-note:empty{margin-top:0;min-height:0}
 .max-note.nudge{animation:nudge .35s ease}
@@ -342,6 +345,20 @@ input[type=range]{width:100%;accent-color:var(--cobalt);height:32px;cursor:point
 @keyframes jet{0%,100%{opacity:.35}50%{opacity:.85}}
 @media (prefers-reduced-motion: reduce){.doodle *{animation:none!important}}
 .status .roast{font-size:17px;line-height:1.5;max-width:34em}
+/* private recap: a little DM window, louder than the data panels, quieter than the result card */
+.dm{position:relative;background:var(--opt-bg);border:2px solid var(--edge);border-radius:22px;overflow:hidden;box-shadow:6px 6px 0 var(--card-pop), 6px 6px 0 2px var(--edge);transform:rotate(.6deg)}
+.dm-top{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:11px 16px;border-bottom:2px solid var(--edge);background:linear-gradient(90deg, var(--bar-3), var(--bar-2) 55%, var(--bar-1))}
+.dm-dots{flex:none;width:44px;height:10px;background:radial-gradient(circle at 5px 5px, var(--tomato) 4.5px, transparent 5px), radial-gradient(circle at 22px 5px, var(--mari) 4.5px, transparent 5px), radial-gradient(circle at 39px 5px, var(--pista) 4.5px, transparent 5px)}
+.dm-title{font:800 19px/1.15 var(--display);color:var(--ink);letter-spacing:-.01em}
+.dm-note{margin-left:auto;font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.dm-body{display:flex;flex-direction:column;gap:9px;padding:16px}
+.dm-msg{align-self:flex-start;max-width:92%;padding:10px 14px;border-radius:18px;border-bottom-left-radius:5px;background:var(--surface);border:1.5px solid var(--line);font-size:16px;line-height:1.45;color:var(--ink);animation:pop .34s cubic-bezier(.2,.9,.3,1.3) both}
+.dm-msg:nth-child(even){align-self:flex-end;border-radius:18px;border-bottom-right-radius:5px;background:var(--pick);border-color:var(--pick);color:var(--surface)}
+@media (prefers-reduced-motion: reduce){.dm-msg{animation:none}}
+.baseline{border:2px dashed var(--edge);border-radius:var(--r);padding:20px;display:grid;gap:10px;background:var(--frost)}
+.baseline p{font-size:15px;color:var(--ink-2);max-width:36em}
+.baseline .baseline-h{font:800 20px/1.2 var(--display);color:var(--ink)}
+.baseline .row{margin-top:4px}
 .share-badge{justify-self:start;display:flex;align-items:center;gap:14px;padding:12px 20px 12px 16px;margin-top:6px;background:#FFFDF8;color:#211C3D;border:2.5px solid #211C3D;border-radius:22px;box-shadow:5px 5px 0 #211C3D;transform:rotate(-1.5deg)}
 .share-badge b{font:800 clamp(52px, 15vw, 76px)/.9 var(--display);color:#D6402A;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .share-badge span{font:700 16px/1.25 var(--body);max-width:11em}
@@ -456,8 +473,8 @@ footer{margin-top:28px;font-size:13px;color:var(--ink-2);text-align:center}
 <script type="application/json" id="survey-data">
 {
   "questions": [
-    {"id":"medium","type":"multi","max":3,"kicker":"First, the fun part","title":"What do you make?","hint":"Pick up to 3.","layout":"two","short":"What creators make","options":[["visual","Visual art & illustration"],["shortvideo","Short-form video"],["longvideo","Long-form video"],["written","Written content (Substack, X, etc.)"],["podcast","Podcast"],["photo","Photography"],["music","Music"],["writing","Writing & poetry"],["design","Design"],["other","Other"]]},
-    {"id":"stage","type":"single","kicker":"Where you're at","title":"How does creating fit in your life right now?","hint":"","short":"Creator stage","options":[["fulltime","It's my job, full-time or close to it"],["side","It's a side thing that brings in some money"],["passion","It's mostly for fun and fulfillment, money or not"]]},
+    {"id":"medium","type":"multi","max":3,"kicker":"First, the fun part","title":"What do you make?","hint":"Pick up to 3.","layout":"two","short":"What creators make","options":[["visual","Visual art & illustration"],["shortvideo","Short-form video"],["longvideo","Long-form video"],["written","Written content (Substack, X, etc.)"],["podcast","Podcast"],["photo","Photography"],["music","Music"],["writing","Writing & poetry"],["design","Design"],["other","Something else that’s cool"],["notyet","Nothing yet, but I want to start"]],"exclusive":["notyet"]},
+    {"id":"stage","type":"single","kicker":"Where you're at","title":"How does creating fit in your life right now?","hint":"","short":"Creator stage","options":[["fulltime","It's my job, full-time or close to it"],["side","It's a side thing that brings in some money"],["passion","It's mostly for fun and fulfillment, money or not"],["aspiring","I’m not creating yet, but I want to start"]]},
     {"id":"chores","type":"multi","max":3,"kicker":"A little venting","title":"Which parts of creative life would you happily never do again?","hint":"Pick up to 3. We all have them.","layout":"two","short":"Chores creators would hand off","options":[["admin","Invoicing, scheduling & email"],["promo","Posting, marketing & growing an audience"],["production","Editing, formatting & technical work"],["friction","Research, getting started & creative blocks"],["bizdev","Finding clients, pitching & negotiating"],["none","Honestly? I love all of it"]],"exclusive":["none"]},
     {"id":"guess","type":"people","kicker":"Your best guess","title":"Just a hunch: Out of 10 creative people you know, how many do you think use AI somewhere in their creative work?","hint":"No need to know for sure. Tap a person or drag the slider.","short":"Your guess"},
     {"id":"feel","type":"feel","kicker":"Vibe check","title":"When AI comes up in creative circles, you feel…","hint":"Pick the one that fits best.","short":"How creators feel","options":[["giddy","Giddy — I'm fascinated. Tell me everything."],["curious","Curious — I'm interested, but still figuring it out."],["torn","Torn — Part of me loves it; part of me has reservations."],["mute","On Mute — I tune out when AI comes up. I'm just not interested in the conversation."],["overit","Over It — I'm actively tired of hearing about AI. Can we talk about literally anything else?"]]},
@@ -468,14 +485,14 @@ footer{margin-top:28px;font-size:13px;color:var(--ink-2);text-align:center}
     {"id":"disclose","type":"single","kicker":"Last one: just between us","title":"Have you ever avoided mentioning that you used AI in something you created?","hint":"","short":"Avoided mentioning AI use","options":[["frequently","Yes, frequently."],["occasionally","Yes, occasionally."],["once","Once or twice."],["transparent","No, I'm comfortable being transparent."],["nouse","I don't use AI."]]}
   ],
   "statuses": {
-    "notyou": {"name": "It's Not You, It's Me", "line": "You don't use AI and you're not particularly interested. Boundaries are attractive.", "roast": "You took one look at AI and said “absolutely not,” and honestly? Respect. You're out here making everything by hand like the printing press just dropped. Purist energy. Just don't get smug about it at brunch."},
-    "singlecurious": {"name": "Single & Curious", "line": "You're not using AI yet, but you're open to seeing what happens.", "roast": "You keep “accidentally” reading about AI at 1am. You're not using it, you're just… looking. Researching. Asking for a friend. Babe, we can all see you lurking. Just say hi."},
-    "complicated": {"name": "It's Complicated", "line": "You use AI, but you have mixed feelings about the relationship. That tension is real, and you're far from alone in it.", "roast": "You use it, you resent that you use it, and you'd rather not discuss it. You've rage-closed the tab twice this week and reopened it ten minutes later. Have you considered couples therapy?"},
-    "fwb": {"name": "Friends With Benefits", "line": "You use AI when it's useful. No commitment, no emotional attachment.", "roast": "You use AI when it's convenient and ghost it the second you're done. No pet names, no feelings, no labels. Honestly iconic. It's probably telling the other chatbots you're emotionally unavailable."},
-    "situationship": {"name": "Situationship", "line": "AI is helping you out, but you're not especially comfortable talking about it with other creative people. Plenty of creators are in the exact same spot.", "roast": "AI helps you every single week and you've told exactly no one. You'd rather walk into the sea than say “I used AI for that” in the group chat. Plot twist: half the group chat is doing the same thing."},
-    "workspouse": {"name": "Work Spouse", "line": "AI handles the business, admin and tedious tasks. The creative work stays primarily human.", "roast": "AI does your invoices, your emails and your scheduling, and never once asks for credit. You keep the art, it keeps the spreadsheets. Healthiest relationship you've ever had, frankly. Buy it a mug."},
-    "open": {"name": "Open Relationship", "line": "AI is part of your creative process, and you're comfortable talking about it.", "roast": "AI's in your process and you'll tell anyone who asks, plus several people who didn't. Very evolved. Very “we communicate.” Slightly exhausting at parties, but at least you're honest."},
-    "married": {"name": "Married to the Machine", "line": "AI is woven into practically everything you do. This one's committed.", "roast": "AI is in your brainstorms, your drafts, your edits and probably your dreams. You've stopped saying “I made this” and started saying “we.” We're happy for you. Blink twice if you need help."}
+    "notyou": {"name": "It's Not You, It's Me", "line": "You don't use AI and you're not particularly interested. Boundaries are attractive.", "roast": "Okay, so you and AI are not together, and honestly? Good for you, queen. You looked the entire future of technology dead in the eyes and said “no thank you, I’m busy,” which is the most powerful thing I have ever witnessed. I could never. I can’t even say no to a free sample at the grocery store."},
+    "singlecurious": {"name": "Single & Curious", "line": "You're not using AI yet, but you're open to seeing what happens.", "roast": "Hi! Okay, so you’re single, but you’re LOOKING. You’ve been staring at AI from across the room for months and you have not said one single word to it. I’m screaming. Just go talk to it! Worst case it says something weird and you leave. That’s literally every date I’ve ever been on."},
+    "complicated": {"name": "It's Complicated", "line": "You use AI, but you have mixed feelings about the relationship. That tension is real, and you're far from alone in it.", "roast": "Oh my god, okay. So you use AI, but you’re also kind of mad about it? Which, babe, is the most relatable thing I’ve ever heard. You keep going back. You keep saying “this is the last time.” It is not the last time. I’m not judging, I’m literally doing the exact same thing with my ex."},
+    "fwb": {"name": "Friends With Benefits", "line": "You use AI when it's useful. No commitment, no emotional attachment.", "roast": "Okay, so you use AI when it’s convenient and then you just… leave. No feelings. No labels. No “what are we.” You are so cool that I’m genuinely intimidated, and I’ve never been cool a single day in my life. I once cried because a barista remembered my name."},
+    "situationship": {"name": "Situationship", "line": "AI is helping you out, but you're not especially comfortable talking about it with other creative people. Plenty of creators are in the exact same spot.", "roast": "Wait. So AI is helping you constantly and you have told NO ONE? Babe. That’s a secret relationship. You’re sneaking out the window at night. I love this for you, but also, half your group chat is doing the exact same thing and none of you are saying it, which is honestly the funniest thing I’ve ever heard in my life."},
+    "workspouse": {"name": "Work Spouse", "line": "AI handles the business, admin and tedious tasks. The creative work stays primarily human.", "roast": "Okay, so AI does all your boring work stuff and you keep the creative part for yourself. That’s a work spouse! That is the healthiest relationship anyone has ever had, ever. It answers your emails. It never asks how your weekend was. Honestly, get it a little card and a muffin."},
+    "open": {"name": "Open Relationship", "line": "AI is part of your creative process, and you're comfortable talking about it.", "roast": "Okay, so you use AI in your creative work and you tell everyone about it. Like, everyone. The mailman knows. Your aunt knows. A stranger at the gas station knows. I’m obsessed with how open you are. I can’t even tell people I don’t like cilantro."},
+    "married": {"name": "Married to the Machine", "line": "AI is woven into practically everything you do. This one's committed.", "roast": "OH MY GOD, you’re MARRIED. AI is in your brainstorms, your drafts, your edits, your whole life. You two are basically one person now. I’m so happy for you. I’m going to cry at the wedding. I’m going to give a speech nobody asked for and it’s going to be mostly about me."}
   }
 }
 </script>
@@ -617,10 +634,10 @@ function sampleRows(){
   function some(weights, max){ var out=[]; Object.keys(weights).forEach(function(k){ if(rnd()<weights[k]) out.push(k); }); return max? out.slice(0,max): out; }
   var rows=[];
   var ACTS = {brainstorm:.5,research:.55,writing:.4,visual:.2,music:.1,video:.18,coding:.15,marketing:.35,ops:.45,feedback:.2};
-  for (var i=0;i<137;i++){
+  for (var i=0;i<42;i++){
     var a={};
     a.medium = some({visual:.3,shortvideo:.35,longvideo:.25,written:.25,podcast:.15,photo:.18,music:.25,writing:.2,design:.15,other:.05},3); if(!a.medium.length) a.medium=["visual"];
-    a.stage = pick({fulltime:3,side:4,passion:4});
+    a.stage = pick({fulltime:3,side:4,passion:4,aspiring:1});
     a.chores = some({admin:.55,promo:.45,production:.3,friction:.25,bizdev:.45},3); if(!a.chores.length) a.chores=["none"];
     a.guess = [1,2,2,3,3,3,4,4,5,5,6,7][Math.floor(rnd()*12)]*10;
     var user = rnd() < .68;
@@ -662,6 +679,7 @@ function call(fn, arg){
     setTimeout(function(){
       if (fn === "saveFollowup" || fn === "saveReaction") return resolve({ ok:true, preview:true });
       var rows = sampleRows(); if (fn === "submit") rows.push(arg);
+      else if (fn === "getResults" && state.answers && state.answers.uses) rows.push(payload()); // keep your own answer in the preview count
       resolve(aggregate(rows));
     }, 700);
   });
@@ -676,9 +694,9 @@ function renderIntro(){
   var done = store(STORE_KEY);
   app.innerHTML = previewBanner() + '\
   <section class="intro">\
-    <p class="eyebrow">A 3-minute quiz for creators</p>\
     <h1>Your <em>AI</em> Relationship Status<span class="spark" aria-hidden="true"></span></h1>\
-    <p class="lede">Everyone has opinions about AI and art, but almost nobody says what they actually do. Answer 10 quick questions, then see how you compare with everyone else.</p>\
+    <p class="intro-sub">A 3-minute quiz about creativity and AI</p>\
+    <p class="lede">Everyone has opinions about AI and art, but almost nobody says what they actually do. Answer 10 quick questions, then see how you compare with other creators.</p>\
     <ul class="promises">\
       <li><span class="tick">✓</span><span><b>Anonymous.</b> Today you\'re ' + anonName() + ', a random name made just for you. No real names, emails or accounts, and nothing ties answers to you.</span></li>\
       <li><span class="tick">✓</span><span><b>No wrong answers.</b> "Never touch it" and "use it daily" are equally welcome.</span></li>\
@@ -1097,6 +1115,56 @@ function doodleSVG(id, standaloneColor){
   return '<svg class="doodle-svg" viewBox="0 0 320 200" role="img" aria-label="A dramatic stick-figure drawing of your relationship with AI">' + inner + '</svg>';
 }
 
+/* ---------- personal recap: what they told us, in the same voice ---------- */
+var RECAP = {
+  feel: { giddy: "You’re Giddy about it, which I love, because I’m also giddy about everything. I got giddy at a car wash.",
+          curious: "You’re Curious, which is so smart and mature of you. I could never.",
+          torn: "You’re Torn, which is the most honest feeling a person can have. Growth.",
+          mute: "You tune out the second AI comes up, which is honestly a power move.",
+          overit: "You’re Over It, and you said it with your whole chest. Respect." },
+  acts: { brainstorm: "brainstorming", research: "research", writing: "writing and editing", visual: "visuals", music: "music", video: "video",
+          coding: "code", marketing: "marketing", ops: "admin", feedback: "feedback" },
+  talk: { never: "and your creative friends never talk about it, so everyone is being extremely mysterious.",
+          rarely: "and it barely comes up with your creative friends, so everyone is being extremely mysterious.",
+          sometimes: "and it comes up with your friends sometimes, which feels healthy? I think?",
+          often: "and your friends talk about it a lot, so your group chat is basically a tech podcast now.",
+          constantly: "and your friends talk about it constantly, so your group chat is basically a tech podcast now." },
+  hes: { quality: "You’re not sure it’s even good enough, which is such a critic thing to say. Love.",
+         personal: "You worry it makes the work feel less like you, which is so deep. I’m writing that down.",
+         copyright: "You’re worried about copyright and who gets paid, which, correct. Artists should get paid. I’m screaming.",
+         training: "How these models get trained makes you uneasy, and honestly? Fair.",
+         perception: "You’re worried what people will think, which, same, I worry about that every second of my life.",
+         reliability: "You don’t fully trust it to get things right, which is smart, because neither do I.",
+         dependence: "You’re scared of getting too attached, which is the most romantic sentence in this entire survey.",
+         value: "You think it undermines human creativity, and you said it with conviction.",
+         none: "And you have zero hesitations. None. Fearless.",
+         other: "Your hesitation is “something else,” which is mysterious and I respect it." },
+  line: { none: "Your line is “never, not even once,” which is a wall and I respect a wall.",
+          personal: "Your line is personal stuff only, keep it away from the work.",
+          around: "Your line is the business stuff around the art, and that’s it.",
+          process: "Your line is behind the scenes, never the final piece.",
+          final: "Your line is parts of the final piece, as long as everybody knows.",
+          anything: "Your line is “whatever makes the work better,” which is wild. Love." },
+  disclose: { frequently: "And you’ve kept it quiet a lot. Like, a lot.",
+              occasionally: "And you’ve kept it on the down-low a few times.",
+              once: "And you’ve kept it quiet once or twice, which, we all have.",
+              transparent: "And you’re totally transparent about it, which is so brave." }
+};
+function personalRecap(a){
+  var parts = [];
+  if (RECAP.feel[a.feel]) parts.push(RECAP.feel[a.feel]);
+  var acts = Object.keys(usesMap(a)).map(function(k){ return RECAP.acts[k]; }).filter(Boolean);
+  var useLine = !acts.length ? "You don’t use it for anything creative right now"
+    : acts.length === 1 ? "AI shows up in your " + acts[0]
+    : acts.length <= 3 ? "AI shows up in your " + acts.slice(0, -1).join(", ") + " and " + acts[acts.length - 1]
+    : "AI shows up in your " + acts.slice(0, 2).join(", ") + " and " + (acts.length - 2) + " other things";
+  parts.push(useLine + ", " + (RECAP.talk[a.talk] || "and that’s that."));
+  var h = (a.hesitation || [])[0]; if (RECAP.hes[h]) parts.push(RECAP.hes[h]);
+  if (RECAP.line[a.line]) parts.push(RECAP.line[a.line]);
+  if (RECAP.disclose[a.disclose]) parts.push(RECAP.disclose[a.disclose]);
+  return parts;
+}
+
 /* ---------- shareable result: text for the share sheet ---------- */
 function snapshot(st, sameStatus, link){
   var text = ANON + "'s relationship status with AI: " + st.name + ".\n\n" + st.roast +
@@ -1154,6 +1222,7 @@ function drawCardImage(st, sameStatus, link){
 
     var rf = "500 38px " + BODY, rlh = 52, rl = lines(st.roast, rf, W - P*2);
     if (rl.length > 7){ rf = "500 34px " + BODY; rlh = 46; rl = lines(st.roast, rf, W - P*2); }
+    if (rl.length > 8){ rf = "500 30px " + BODY; rlh = 41; rl = lines(st.roast, rf, W - P*2); }
     x.font = rf; x.fillStyle = INK; rl.forEach(function(l, i){ x.fillText(l, P, y + i*rlh); });
     y += rl.length * rlh + 40;
 
@@ -1275,7 +1344,14 @@ function renderResults(){
 
   var shareLink = CONFIG.shareUrl || R.url || (state.mode === "fetch" ? location.href.split("#")[0] : "");
   var snap = snapshot(st, sameStatus, shareLink);
-  var early = n < 30 ? '<p class="fine">Early results: ' + n + ' creator' + (n===1?"":"s") + ' so far. These numbers will move as more people answer.</p>' : '';
+  // the first 100 respondents get the baseline note and a refresh button; past 100 both disappear
+  var BASELINE_MAX = 100;
+  var early = n <= BASELINE_MAX ? '<section class="baseline" aria-labelledby="baseline-h">\
+      <p class="baseline-h" id="baseline-h">You\'re helping establish the baseline.</p>\
+      <p>You\'re among the first people defining the relationship. As more creators respond, we\'ll be able to see how your answers compare with others.</p>\
+      <p>For now, here\'s what your answers tell us about your own relationship with AI.</p>\
+      <div class="row"><button class="btn alt" id="refresh-results" type="button">Refresh results</button><span class="toast" id="refresh-msg" role="status"></span></div>\
+    </section>' : '';
 
   app.innerHTML = previewBanner() + '\
   <div class="results">\
@@ -1287,6 +1363,10 @@ function renderResults(){
       <div class="share-badge"><b>' + sameStatus + '%</b><span>of creators share this status</span></div>\
       <p class="share-of">' + n + (n === 1 ? ' creator' : ' creators') + ' answered so far</p>\
       <div class="card-actions"><button class="btn" id="share-card" type="button">Share my result</button><button class="btn alt" id="save-card" type="button">Save as image</button><button class="btn alt" id="share-link" type="button">Share with a friend</button><span class="toast" id="card-msg" role="status"></span></div>\
+    </section>\
+    <section class="dm" aria-labelledby="dm-h">\
+      <div class="dm-top"><span class="dm-dots" aria-hidden="true"></span><span class="dm-title" id="dm-h">Here’s what you told me</span><span class="dm-note">just for you · not on your share card</span></div>\
+      <div class="dm-body">' + personalRecap(a).map(function(t, k){ return '<p class="dm-msg" style="animation-delay:' + (0.15 + k*0.12).toFixed(2) + 's">' + esc(t) + '</p>'; }).join("") + '</div>\
     </section>\
     ' + early + '\
     <section class="panel">\
@@ -1436,6 +1516,17 @@ function renderResults(){
       msg.style.color=""; msg.textContent = r && r.preview ? "Preview mode: not saved." : "Got it. Thank you!";
       document.getElementById("ff-contact").value = "";
     }).catch(function(){ go.disabled = false; msg.style.color="var(--heart)"; msg.textContent = "That didn't save. Try again in a moment."; });
+  };
+  // refresh (first 100 only): pull the latest totals and redraw in place
+  var rb = document.getElementById("refresh-results");
+  if (rb) rb.onclick = function(){
+    var y = window.scrollY, rm = document.getElementById("refresh-msg");
+    rb.disabled = true; rm.style.color = ""; rm.textContent = "Checking for new answers\u2026";
+    call("getResults").then(function(agg){
+      state.results = agg; renderResults(); window.scrollTo(0, y);
+      var m2 = document.getElementById("refresh-msg");
+      if (m2) m2.textContent = "Updated. " + (agg.n || 0) + (agg.n === 1 ? " creator" : " creators") + " so far.";
+    }).catch(function(){ rb.disabled = false; rm.style.color = "var(--heart)"; rm.textContent = "Couldn\u2019t refresh. Try again in a moment."; });
   };
   // share / copy the snapshot card
   var cardMsg = document.getElementById("card-msg");
