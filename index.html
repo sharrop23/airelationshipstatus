@@ -499,7 +499,7 @@ footer{margin-top:28px;font-size:13px;color:var(--ink-2);text-align:center}
 
 <div class="themebar"><span class="anon-chip" id="anon-chip" title="A random name made on this device. It is never saved with your answers."></span><button class="theme-btn" id="theme-btn" type="button" aria-pressed="false"><span class="ico" aria-hidden="true">☾</span><span class="lbl">Dark mode</span></button></div>
 <div class="wrap" id="app" aria-live="polite"></div>
-<footer class="wrap" style="padding-block:0 32px">Anonymous by design. No names, no emails, no IP addresses stored with your answers.</footer>
+<footer class="wrap" style="padding-block:0 32px">Not affiliated with any AI company. Anonymous by design. No names, no emails, no IP addresses stored with your answers.</footer>
 
 <script>
 (function(){
@@ -706,7 +706,6 @@ function renderIntro(){
       <button class="btn heart" id="start">' + (done ? "See your results" : "Let's find out") + ' <span aria-hidden="true">→</span></button>\
       ' + (done && state.mode==="preview" ? '<button class="btn ghost" id="redo">Take it again (preview only)</button>' : '') + '\
     </div>\
-    <p class="byline">A Stanford student\'s project on how creators really feel about AI. Not affiliated with any AI company.</p>\
   </section>';
   var introName = app.querySelector(".promises .anon-name"); if (introName) scrambleInto(introName, ANON);
   document.getElementById("start").onclick = function(){
