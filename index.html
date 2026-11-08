@@ -1,0 +1,1471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="A 3-minute, anonymous quiz for creators. Find out your relationship status with AI and how you compare.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Your AI Relationship Status">
+<meta property="og:description" content="A 3-minute, anonymous quiz for creators. Find out your relationship status with AI and how you compare.">
+<meta property="og:url" content="https://airelationshipstatus.com/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Your AI Relationship Status">
+<meta name="twitter:description" content="A 3-minute, anonymous quiz for creators. Find out your relationship status with AI and how you compare.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23211C3D'/%3E%3Cpath d='M32 8 L38.5 25.5 L56 32 L38.5 38.5 L32 56 L25.5 38.5 L8 32 L25.5 25.5Z' fill='%23F0A531'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://airelationshipstatus.com/">
+</head>
+<body>
+<title>Your AI Relationship Status</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one centered column like flipping through early-2000s IM windows and profile cards; results scroll as a stack of tinted, sticker-y panels.
+   Two themes: "faded analog" (light, default) and "late-night chat room" (dark). Dark follows the system unless the toggle picks one. */
+:root{
+  color-scheme:light;
+  /* foundation: faded analog */
+  --ivory:#FBF5EA; --paper:#FFFDF8; --rose:#EBC0C3; --blue:#B5CDE6; --lav:#D3C5EE; --gold:#E2C886;
+  /* accents, one at a time */
+  --tomato:#D6402A; --pista:#C4E0A6; --cobalt:#2747C9; --mari:#F0A531;
+  --ink:#211C3D; --ink-2:#4B4568; --muted:#6E678A; --line:rgba(33,28,61,.16);
+  /* roles */
+  --bg:var(--ivory); --surface:var(--paper);
+  --heart:var(--tomato); --heart-soft:#FBE1DB;   /* "you" on results */
+  --pick:var(--cobalt); --pick-soft:#E2E9FB;     /* selections on questions */
+  --bar:rgba(33,28,61,.2); --mint:#2D7A4C;
+  /* surfaces & strokes that change per theme */
+  --edge:var(--ink); --shadow:var(--ink); --frost:rgba(255,253,248,.72); --opt-bg:var(--ivory);
+  --glow-1:rgba(211,197,238,.85); --glow-2:rgba(181,205,230,.8); --glow-3:rgba(235,192,195,.7);
+  --btn-2:#211C3D; --btn-text:#fff;
+  --bar-1:var(--blue); --bar-2:var(--lav); --bar-3:var(--rose); --card-pop:var(--lav);
+  --status-bg:linear-gradient(135deg, var(--lav) 0%, var(--rose) 55%, var(--gold) 100%);
+  --tint-blue:#E6EEF8; --tint-lav:#EEE8F9; --tint-rose:#F8E7E7; --tint-gold:#F7EFD9; --tint-pista:#EAF4DF;
+  --banner-bg:#FCEBC8; --banner-b:#9A5A00; --hilite:var(--rose); --people-off:var(--lav); --big-shadow:var(--rose);
+  --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body:"Figtree", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --mono:"DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r:22px;
+  --pop:4px 4px 0 var(--shadow);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --ink:#F4EFFF; --ink-2:#CDC5EA; --muted:#A39BC6; --line:rgba(244,239,255,.17);
+  --bg:#16122B; --surface:#221C3F; --paper:#2A2449; --ivory:#1C1735;
+  --tomato:#FF6F57; --heart:#FF6F57; --heart-soft:rgba(255,111,87,.16);
+  --cobalt:#8EA4FF; --pick:#8EA4FF; --pick-soft:rgba(142,164,255,.16);
+  --mari:#FFBE4D; --pista:#B6E58F; --mint:#8EE0A8;
+  --bar:rgba(244,239,255,.26);
+  --edge:#C9BCFF; --shadow:#07050F; --frost:rgba(34,28,63,.72); --opt-bg:#1C1735;
+  --glow-1:rgba(122,82,214,.45); --glow-2:rgba(39,71,201,.4); --glow-3:rgba(214,64,120,.32);
+  --btn-2:#DCD2FF; --btn-text:#16122B;
+  --bar-1:#3B4F86; --bar-2:#55418F; --bar-3:#8A3F6C; --card-pop:#6B4FC7;
+  --status-bg:linear-gradient(135deg, #4C3A9C 0%, #8E3A72 58%, #A8702A 100%);
+  --tint-blue:#1E2747; --tint-lav:#2A2250; --tint-rose:#35203E; --tint-gold:#332A25; --tint-pista:#1F3130;
+  --banner-bg:#3A2D17; --banner-b:#FFBE4D; --hilite:rgba(255,111,87,.35); --people-off:#3E3570; --big-shadow:#5A2440;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ink:#F4EFFF; --ink-2:#CDC5EA; --muted:#A39BC6; --line:rgba(244,239,255,.17);
+  --bg:#16122B; --surface:#221C3F; --paper:#2A2449; --ivory:#1C1735;
+  --tomato:#FF6F57; --heart:#FF6F57; --heart-soft:rgba(255,111,87,.16);
+  --cobalt:#8EA4FF; --pick:#8EA4FF; --pick-soft:rgba(142,164,255,.16);
+  --mari:#FFBE4D; --pista:#B6E58F; --mint:#8EE0A8;
+  --bar:rgba(244,239,255,.26);
+  --edge:#C9BCFF; --shadow:#07050F; --frost:rgba(34,28,63,.72); --opt-bg:#1C1735;
+  --glow-1:rgba(122,82,214,.45); --glow-2:rgba(39,71,201,.4); --glow-3:rgba(214,64,120,.32);
+  --btn-2:#DCD2FF; --btn-text:#16122B;
+  --bar-1:#3B4F86; --bar-2:#55418F; --bar-3:#8A3F6C; --card-pop:#6B4FC7;
+  --status-bg:linear-gradient(135deg, #4C3A9C 0%, #8E3A72 58%, #A8702A 100%);
+  --tint-blue:#1E2747; --tint-lav:#2A2250; --tint-rose:#35203E; --tint-gold:#332A25; --tint-pista:#1F3130;
+  --banner-bg:#3A2D17; --banner-b:#FFBE4D; --hilite:rgba(255,111,87,.35); --people-off:#3E3570; --big-shadow:#5A2440;
+}
+
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;color:var(--ink);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(42rem 30rem at -10% -5%, var(--glow-1), transparent 60%),
+    radial-gradient(36rem 28rem at 110% 18%, var(--glow-2), transparent 62%),
+    radial-gradient(40rem 30rem at 50% 115%, var(--glow-3), transparent 60%);
+  background-attachment:fixed}
+.wrap{max-width:640px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.015em}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:3px;border-radius:10px}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.banner{background:var(--banner-bg);border:1.5px dashed var(--mari);color:var(--ink);border-radius:14px;padding:10px 14px;font-size:14px;margin-bottom:18px}
+.banner b{color:var(--banner-b)}
+
+/* sparkle: the Y2K glint, used on the two big reveal moments only */
+.spark{display:inline-block;width:.5em;height:.5em;background:var(--mari);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);vertical-align:.45em;margin-left:.08em;animation:twinkle 2.4s ease-in-out infinite}
+@keyframes twinkle{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(.7) rotate(45deg)}}
+
+/* --- Intro --- */
+.intro{display:grid;gap:22px;padding-top:10px}
+.intro h1{font-size:clamp(44px, 11vw, 76px);font-weight:800}
+.intro h1 em{font-style:normal;color:var(--tomato);background:linear-gradient(transparent 62%, var(--hilite) 62%, var(--hilite) 92%, transparent 92%);padding:0 .06em}
+.lede{font-size:18px;color:var(--ink-2);max-width:34em}
+.promises{display:grid;gap:10px;margin:0;padding:16px 18px;list-style:none;background:var(--frost);border:1.5px solid var(--line);border-radius:18px}
+.promises li{display:flex;gap:12px;align-items:baseline;font-size:15px;color:var(--ink-2)}
+.promises li b{color:var(--ink);font-weight:600}
+.promises .tick{flex:none;width:22px;height:22px;border-radius:50%;background:var(--pista);border:1.5px solid var(--edge);display:grid;place-items:center;font:600 12px/1 var(--mono);color:#211C3D;transform:translateY(4px)}
+.byline{font-size:14px;color:var(--muted)}
+
+/* pill buttons: flat fill, small hard shadow */
+.btn{appearance:none;cursor:pointer;border-radius:999px;padding:14px 26px;font-weight:700;font-size:17px;display:inline-flex;align-items:center;gap:10px;
+  color:var(--btn-text);border:2px solid var(--edge);box-shadow:3px 3px 0 var(--shadow);
+  background:var(--btn-2);
+  transition:transform .15s ease, box-shadow .15s ease, background-color .15s ease}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--shadow)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:3px 3px 0 var(--shadow)}
+.btn .spark{background:#FFE7A3;width:.8em;height:.8em;vertical-align:0;margin-left:0}
+/* main call to action: flat, deep tomato so white text clears 5.5:1 in both themes */
+.btn.heart{color:#fff;background:#C2321D;border-color:#211C3D}
+.btn.heart:hover{background:#AE2A16}
+.btn.ghost{background:transparent;border-color:transparent;box-shadow:none;color:var(--ink-2);padding:12px 6px;font-weight:600;font-size:15px}
+.btn.ghost:hover{color:var(--ink);transform:none;box-shadow:none}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+
+/* --- Question card: a little IM window --- */
+.progress{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.dots{display:flex;gap:5px;flex:1}
+.dots i{height:8px;flex:1;border-radius:4px;background:var(--frost);border:1px solid var(--line);transition:background .25s}
+.dots i.on{background:linear-gradient(180deg, color-mix(in srgb, var(--cobalt) 70%, #fff), var(--cobalt));border-color:var(--cobalt)}
+.dot-btn{appearance:none;flex:1;display:flex;align-items:center;padding:8px 0;margin:-8px 0;border:0;background:none;cursor:pointer}
+.dot-btn i{flex:1;height:8px;border-radius:4px;background:var(--frost);border:1px solid var(--line);transition:background .25s, transform .15s}
+.dot-btn.on i{background:linear-gradient(180deg, color-mix(in srgb, var(--cobalt) 70%, #fff), var(--cobalt));border-color:var(--cobalt)}
+.dot-btn:hover i{transform:scaleY(1.6)}
+.dot-btn.here i{box-shadow:0 0 0 2px var(--surface), 0 0 0 3.5px var(--cobalt)}
+.count{font:500 13px/1 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.card{position:relative;background:var(--surface);border:2px solid var(--edge);border-radius:20px;padding:56px 22px 26px;box-shadow:6px 6px 0 var(--card-pop), 6px 6px 0 2px var(--edge);animation:in .35s ease both;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0 0 auto;height:34px;border-bottom:2px solid var(--edge);
+  background:linear-gradient(90deg, var(--bar-1), var(--bar-2) 55%, var(--bar-3))}
+.card::after{content:"";position:absolute;top:11px;left:14px;width:52px;height:12px;
+  background:radial-gradient(circle at 6px 6px, var(--tomato) 5px, transparent 5.5px), radial-gradient(circle at 26px 6px, var(--mari) 5px, transparent 5.5px), radial-gradient(circle at 46px 6px, var(--pista) 5px, transparent 5.5px)}
+@keyframes in{from{opacity:.0;transform:translateY(12px) rotate(-.6deg)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.card,.reveal-mark,.spark,.msg,.spec-pic{animation:none!important;transition:none!important}}
+.card h2{font-size:clamp(26px, 6.4vw, 34px);font-weight:700;margin:8px 0 6px}
+.hint{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+.opts{display:grid;gap:10px}
+.opts.two{grid-template-columns:repeat(2, minmax(0,1fr))}
+@media (max-width:440px){.opts.two{grid-template-columns:1fr}}
+.opt{appearance:none;text-align:left;cursor:pointer;background:var(--opt-bg);border:1.5px solid var(--line);border-radius:14px;padding:13px 15px;font-size:15.5px;font-weight:500;display:flex;gap:12px;align-items:center;transition:border-color .12s, background .12s, transform .12s, box-shadow .12s;min-width:0}
+.opt:hover{border-color:var(--edge);transform:translate(-1px,-1px);box-shadow:2px 2px 0 var(--edge)}
+.opt .box{flex:none;width:20px;height:20px;border-radius:6px;border:2px solid var(--ink-2);background:var(--paper);display:grid;place-items:center;transition:all .12s}
+.opt.radio .box,.opt.circle .box{border-radius:50%}
+.opt.circle .box{width:22px;height:22px}
+.opt[aria-pressed="true"]{border-color:var(--pick);background:var(--pick-soft);box-shadow:2px 2px 0 var(--pick)}
+.opt[aria-pressed="true"] .box{background:var(--pick);border-color:var(--pick)}
+.opt[aria-pressed="true"] .box::after{content:"";width:6px;height:10px;border:solid var(--surface);border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
+.opt.radio[aria-pressed="true"] .box::after{width:8px;height:8px;border:0;border-radius:50%;background:var(--surface);transform:none}
+.opt:disabled{opacity:.4;cursor:not-allowed}
+.at-max .opt[aria-pressed="false"]:not([data-id="none"]){opacity:.5}
+.max-note{min-height:1.4em;margin-top:12px;font:600 14px/1.35 var(--body);color:var(--heart)}
+.max-note:empty{margin-top:0;min-height:0}
+.max-note.nudge{animation:nudge .35s ease}
+@keyframes nudge{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media (prefers-reduced-motion: reduce){.max-note.nudge{animation:none}}
+/* grouped options: each category is its own tinted box with a clear heading */
+.groups{display:grid;gap:14px}
+.group{display:grid;gap:10px;padding:14px 14px 14px 16px;border:1.5px solid var(--line);border-left:6px solid var(--g-accent);border-radius:16px;background:var(--g-tint)}
+.group:nth-child(1){--g-accent:var(--blue);--g-tint:var(--tint-blue)}
+.group:nth-child(2){--g-accent:var(--lav);--g-tint:var(--tint-lav)}
+.group:nth-child(3){--g-accent:var(--rose);--g-tint:var(--tint-rose)}
+.group:nth-child(4){--g-accent:var(--gold);--g-tint:var(--tint-gold)}
+.group-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.group-label{font:700 19px/1.2 var(--display);color:var(--ink);margin:0;letter-spacing:-.01em}
+.group-note{font-size:13.5px;color:var(--ink-2)}
+
+.ratings{display:grid;gap:16px}
+.rate-row{display:grid;gap:8px}
+.rate-name{font-size:15.5px;font-weight:500}
+.rate-btns{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:6px}
+.rate{appearance:none;cursor:pointer;border:1.5px solid var(--line);background:var(--opt-bg);border-radius:12px;padding:8px 4px;display:grid;justify-items:center;gap:2px;transition:border-color .12s, background .12s, box-shadow .12s}
+.rate:hover{border-color:var(--edge)}
+.rate b{font:700 18px/1 var(--display)}
+.rate span{font-size:12px;color:var(--muted)}
+.rate[aria-checked="true"]{border-color:var(--pick);background:var(--pick-soft);box-shadow:2px 2px 0 var(--pick)}
+.rate[aria-checked="true"] b{color:var(--pick)}
+.feel{display:grid;grid-template-columns:1fr;gap:8px}
+.feel .opt{align-items:flex-start;padding:13px 14px;font-size:14.5px;line-height:1.35}
+.feel .opt::before{margin-top:2px}
+.feel-txt b{margin-right:2px}
+.feel-txt b{font-weight:700}
+.feel-txt span{opacity:.85}
+@media (max-width:480px){.feel{grid-template-columns:1fr}}
+.feel .opt .box{display:none}
+/* feelings: warm for eager, cool for uneasy, grey for unbothered */
+.feel .opt[data-id="giddy"]{--c:#B8510A}
+.feel .opt[data-id="curious"]{--c:#B0336A}
+.feel .opt[data-id="torn"]{--c:#6447B8}
+.feel .opt[data-id="mute"]{--c:#6E678A}
+.feel .opt[data-id="overit"]{--c:#34407E}
+.feel .opt,.tiles .opt{--c-line:var(--c);background:color-mix(in srgb, var(--c) 13%, var(--opt-bg));border-color:color-mix(in srgb, var(--c-line) 45%, transparent)}
+.feel .opt::before{content:"";flex:none;width:16px;height:16px;border-radius:50%;background:var(--c-line);box-shadow:0 0 0 3px color-mix(in srgb, var(--c-line) 25%, transparent)}
+.feel .opt:hover,.tiles .opt:hover{border-color:var(--c-line);box-shadow:2px 2px 0 var(--c-line)}
+.feel .opt[aria-pressed="true"],.tiles .opt[aria-pressed="true"]{background:var(--c);border-color:var(--edge);color:#fff;box-shadow:3px 3px 0 var(--shadow);transform:translate(-1px,-1px)}
+.feel .opt[aria-pressed="true"]::before{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.35)}
+
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .feel .opt,:root:not([data-theme="light"]) .tiles .opt{--c-line:color-mix(in srgb, var(--c) 55%, #fff)}}
+:root[data-theme="dark"] .feel .opt,:root[data-theme="dark"] .tiles .opt{--c-line:color-mix(in srgb, var(--c) 55%, #fff)}
+/* group chat preview (talk) */
+.gc{border:2px solid var(--edge);border-radius:16px;background:var(--opt-bg);overflow:hidden;margin-bottom:14px;box-shadow:3px 3px 0 var(--shadow)}
+.gc-top{display:flex;align-items:center;gap:8px;padding:9px 12px;font:600 13.5px/1 var(--body);border-bottom:1.5px solid var(--line);background:linear-gradient(90deg, var(--bar-1), var(--bar-2))}
+.gc-top small{margin-left:auto;font:500 11px/1 var(--mono);color:var(--ink-2)}
+.gc-dot{width:9px;height:9px;border-radius:50%;background:var(--pista);border:1.5px solid var(--edge)}
+.gc-body{display:flex;flex-direction:column;gap:7px;padding:12px;min-height:178px}
+.msg{max-width:80%;padding:8px 12px;border-radius:16px;font-size:14px;line-height:1.3;animation:pop .32s cubic-bezier(.2,.9,.3,1.3) both}
+.msg.l{align-self:flex-start;background:var(--surface);border:1.5px solid var(--line);border-bottom-left-radius:4px}
+.msg.r{align-self:flex-end;background:var(--pick);color:var(--surface);border-bottom-right-radius:4px}
+.msg.sys{align-self:center;max-width:100%;background:none;font:500 12px/1.3 var(--mono);color:var(--muted);text-align:center;padding:4px}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.9)}to{opacity:1;transform:none}}
+.tiles{display:grid;grid-template-columns:repeat(5, minmax(0,1fr));gap:8px}
+.tile{flex-direction:column;justify-content:center;text-align:center;padding:12px 4px;gap:8px;min-height:72px}
+.tile .box{display:none}
+/* volume scale: quiet and grey at "never", loud and saturated at "constantly" */
+.tiles .opt[data-id="never"]{--c:#6E678A}
+.tiles .opt[data-id="rarely"]{--c:#4766B0}
+.tiles .opt[data-id="sometimes"]{--c:#2747C9}
+.tiles .opt[data-id="often"]{--c:#6447B8}
+.tiles .opt[data-id="constantly"]{--c:#9C2A78}
+.tiles .opt[data-id="never"] .lbl{font-size:13px;font-weight:500;font-style:italic}
+.tiles .opt[data-id="rarely"] .lbl{font-size:14px;font-weight:600}
+.tiles .opt[data-id="sometimes"] .lbl{font-size:14.5px;font-weight:700}
+.tiles .opt[data-id="often"] .lbl{font-size:15.5px;font-weight:800}
+.tiles .opt[data-id="constantly"] .lbl{font:800 15px/1.05 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.vol{display:flex;align-items:flex-end;gap:3px;height:20px}
+.vol i{width:5px;border-radius:2px;border:1.5px solid var(--c-line);background:transparent}
+.vol i:nth-child(1){height:6px}.vol i:nth-child(2){height:10px}.vol i:nth-child(3){height:15px}.vol i:nth-child(4){height:20px}
+.tiles .opt[data-id="rarely"] .vol i:nth-child(-n+1),
+.tiles .opt[data-id="sometimes"] .vol i:nth-child(-n+2),
+.tiles .opt[data-id="often"] .vol i:nth-child(-n+3),
+.tiles .opt[data-id="constantly"] .vol i{background:var(--c-line)}
+.tiles .opt[data-id="never"] .vol i{border-style:dashed;opacity:.7}
+.tiles .opt[aria-pressed="true"] .vol i{border-color:#fff}
+.tiles .opt[data-id="rarely"][aria-pressed="true"] .vol i:nth-child(-n+1),
+.tiles .opt[data-id="sometimes"][aria-pressed="true"] .vol i:nth-child(-n+2),
+.tiles .opt[data-id="often"][aria-pressed="true"] .vol i:nth-child(-n+3),
+.tiles .opt[data-id="constantly"][aria-pressed="true"] .vol i{background:#fff}
+/* frequency chips (Q6): tap to cycle off, occasionally, often */
+.freq{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:8px;margin-bottom:10px}
+@media (max-width:440px){.freq{grid-template-columns:1fr}}
+.fchip{appearance:none;cursor:pointer;text-align:left;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name meter" "tag tag";align-items:center;gap:2px 10px;min-height:52px;padding:10px 13px;border-radius:14px;border:1.5px solid var(--line);background:var(--opt-bg);color:var(--ink);font:500 15px/1.3 var(--body);transition:background .12s, border-color .12s, box-shadow .12s, transform .12s}
+.fchip:hover{border-color:var(--edge)}
+.fchip-name{grid-area:name;min-width:0}
+.fchip-meter{grid-area:meter;display:flex;gap:4px}
+.fchip-meter i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--muted)}
+.fchip-tag{grid-area:tag;font:600 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.fchip-tag:empty{display:none}
+.fchip[data-lvl="some"]{border-color:var(--pick);background:var(--pick-soft);box-shadow:2px 2px 0 var(--pick)}
+.fchip[data-lvl="some"] .fchip-meter i:first-child{background:var(--pick);border-color:var(--pick)}
+.fchip[data-lvl="some"] .fchip-meter i:last-child{border-color:var(--pick)}
+.fchip[data-lvl="some"] .fchip-tag{color:var(--pick)}
+.fchip[data-lvl="often"]{border-color:var(--edge);background:#2747C9;color:#fff;box-shadow:3px 3px 0 var(--shadow);transform:translate(-1px,-1px)}
+.fchip[data-lvl="often"] .fchip-meter i{background:#fff;border-color:#fff}
+.fchip[data-lvl="often"] .fchip-tag{color:#fff}
+.fnone{width:100%}
+@media (max-width:540px){.tiles{grid-template-columns:1fr}.tile{flex-direction:row;justify-content:flex-start;text-align:left;min-height:50px;padding:10px 15px;gap:14px}.vol{width:32px}}
+
+/* creativity spectrum (world): a picture that sharpens from blurry B&W to full color */
+.spec{--gray:1;--blur:7px;--sat:.9;position:relative;height:190px;border:2px solid var(--edge);border-radius:18px;overflow:hidden;margin-bottom:8px;background:#ccc;box-shadow:3px 3px 0 var(--shadow)}
+.spec-pic{position:absolute;inset:0;width:100%;height:100%;transform:scale(1.08);filter:grayscale(var(--gray)) blur(var(--blur)) saturate(var(--sat));transition:filter .4s ease}
+.spec-label{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);white-space:nowrap;padding:7px 14px;border-radius:999px;background:#FFFDF8;border:2px solid #211C3D;box-shadow:2px 2px 0 #211C3D;font:800 16px/1 var(--display);color:#211C3D}
+.spec.unset .spec-label{font:500 13px/1 var(--mono);letter-spacing:.06em}
+
+/* where's your line (ladder) */
+.ladder{display:grid;gap:8px}
+.ladder .box{display:none}
+.rung-txt{flex:1;min-width:0}
+.ladder-or{font:500 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:10px 2px 2px}
+.rung{position:relative}
+.rung-mark{flex:none;font:700 12px/1 var(--mono);letter-spacing:.06em}
+.rung.ok{background:var(--tint-pista);border-color:var(--edge)}
+.rung.ok .rung-mark::after{content:"✓ OK"}
+.rung.no{opacity:.6;background:repeating-linear-gradient(135deg, transparent 0 8px, var(--line) 8px 10px)}
+.rung.no .rung-mark::after{content:"✕"}
+.rung.edge{margin-bottom:22px}
+.rung.edge::after{content:"your line";position:absolute;left:-2px;right:-2px;bottom:-16px;border-top:3px dashed var(--pick);font:700 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--pick);text-align:right;padding-top:3px}
+.rung:last-child.edge{margin-bottom:8px}
+.rung:last-child.edge::after{content:none}
+.rung-none[aria-pressed="true"]{border-color:var(--pick)}
+
+.people{display:flex;gap:4px;justify-content:center;flex-wrap:nowrap;margin:8px 0 6px}
+.people svg{width:100%;max-width:44px;height:auto;flex:1}
+.people .p{fill:var(--people-off);transition:fill .15s}
+.people .p.on{fill:var(--cobalt)}
+.slider-read{text-align:center;font-family:var(--display);font-size:22px;font-weight:700;margin:10px 0 4px}
+.slider-read span{color:var(--cobalt)}
+input[type=range]{width:100%;accent-color:var(--cobalt);height:32px;cursor:pointer}
+.scale-ends{display:flex;justify-content:space-between;font:500 12px/1 var(--mono);color:var(--muted)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* --- Loading --- */
+.loading{text-align:center;padding:80px 0;display:grid;gap:16px;justify-items:center}
+.pulse{width:56px;height:56px;color:var(--tomato);animation:beat 1s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}40%{transform:scale(1.18)}}
+
+/* --- Results --- */
+.results{display:grid;gap:20px}
+.status{border:2px solid var(--edge);border-radius:28px;padding:30px 24px;display:grid;gap:12px;position:relative;overflow:hidden;box-shadow:6px 6px 0 var(--shadow);
+  background:var(--status-bg)}
+.status::after{content:"";position:absolute;right:-38px;bottom:-38px;width:130px;height:130px;background:var(--mari);opacity:.85;
+  clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);animation:twinkle 4s ease-in-out infinite}
+.status > *{position:relative;z-index:1}
+.status .eyebrow{color:var(--ink-2)}
+.status h1{font-size:clamp(38px, 10vw, 60px);font-weight:800;max-width:9em}
+.status p{color:var(--ink);max-width:30em}
+.status .share-of{font:500 13px/1.3 var(--mono);color:var(--ink-2)}
+/* shareable snapshot card */
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.card-handle{font:italic 500 12.5px/1.2 var(--mono);color:var(--ink-2)}
+/* result card: doodle, roast and the big share-of sticker */
+.doodle{display:grid;place-items:center;margin:2px 0 -4px}
+.doodle-svg{width:100%;max-width:440px;height:auto;color:var(--ink);overflow:visible}
+.doodle .drip{animation:drip 1.6s ease-in infinite}
+.doodle .d2{animation-delay:.7s}
+@keyframes drip{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(26px);opacity:0}}
+.doodle .zap{animation:zap 1.4s steps(1) infinite}
+@keyframes zap{0%,60%{opacity:1}65%,75%{opacity:0}80%{opacity:1}}
+.doodle .bob{animation:bob 2.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.12)}}
+.doodle .twinkle{animation:twinkle 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.doodle .t2{animation-delay:.8s}
+.doodle .hov{animation:hov 2.4s ease-in-out infinite}
+@keyframes hov{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.doodle .jet{animation:jet .6s ease-in-out infinite}
+@keyframes jet{0%,100%{opacity:.35}50%{opacity:.85}}
+@media (prefers-reduced-motion: reduce){.doodle *{animation:none!important}}
+.status .roast{font-size:17px;line-height:1.5;max-width:34em}
+.share-badge{justify-self:start;display:flex;align-items:center;gap:14px;padding:12px 20px 12px 16px;margin-top:6px;background:#FFFDF8;color:#211C3D;border:2.5px solid #211C3D;border-radius:22px;box-shadow:5px 5px 0 #211C3D;transform:rotate(-1.5deg)}
+.share-badge b{font:800 clamp(52px, 15vw, 76px)/.9 var(--display);color:#D6402A;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.share-badge span{font:700 16px/1.25 var(--body);max-width:11em}
+.facts{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:8px;margin:4px 0 0}
+.facts > div{background:rgba(255,253,248,.62);border:1.5px solid rgba(33,28,61,.18);border-radius:14px;padding:9px 12px;min-width:0}
+.facts > div.wide{grid-column:1 / -1}
+.facts dt{font:500 10.5px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin-bottom:3px}
+.facts dd{margin:0;font:700 15px/1.3 var(--body);color:var(--ink);overflow-wrap:anywhere}
+:root[data-theme="dark"] .facts > div,:root[data-theme="dark"] .card-handle{background:rgba(22,18,43,.45);border-color:rgba(244,239,255,.25)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .facts > div,:root:not([data-theme="light"]) .card-handle{background:rgba(22,18,43,.45);border-color:rgba(244,239,255,.25)}}
+.card-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.card-actions .btn{padding:11px 20px;font-size:15.5px}
+.card-actions .btn.alt{background:var(--surface);color:var(--ink)}
+/* image preview sheet (fallback when the phone can't share files directly) */
+.imgsheet{position:fixed;inset:0;z-index:50;background:rgba(22,18,43,.72);display:grid;place-items:center;padding:20px 16px;overflow:auto}
+.imgsheet-in{background:var(--surface);color:var(--ink);border:2px solid var(--edge);border-radius:22px;box-shadow:6px 6px 0 var(--shadow);padding:16px;display:grid;gap:12px;justify-items:center;max-width:420px;width:100%}
+.imgsheet img{width:auto;max-width:100%;max-height:62vh;border-radius:14px;border:1.5px solid var(--line)}
+.imgsheet p{font-size:14px;color:var(--ink-2);text-align:center}
+.imgsheet .row{justify-content:center}
+
+
+.panel{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:24px 20px;display:grid;gap:14px;min-width:0}
+.panel.t-blue{background:var(--tint-blue)}
+.panel.t-lav{background:var(--tint-lav)}
+.panel.t-rose{background:var(--tint-rose)}
+.panel.t-gold{background:var(--tint-gold)}
+.panel.t-pista{background:var(--tint-pista)}
+.panel h2{font-size:24px;font-weight:700}
+.panel .sub{color:var(--ink-2);font-size:15px}
+.big{font-family:var(--display);font-weight:800;font-size:clamp(56px, 16vw, 88px);line-height:.9;color:var(--tomato);letter-spacing:-.03em;font-variant-numeric:tabular-nums;text-shadow:4px 4px 0 var(--big-shadow)}
+.big small{font-size:.4em;color:var(--ink);letter-spacing:0;font-weight:700;text-shadow:none}
+
+/* reveal line */
+.reveal{position:relative;height:84px;margin:6px 12px 0}
+.reveal .track{position:absolute;left:0;right:0;top:26px;height:6px;border-radius:3px;background:linear-gradient(90deg, var(--blue), var(--lav), var(--rose));border:1px solid var(--line)}
+.reveal .tick{position:absolute;top:42px;font:500 11px/1 var(--mono);color:var(--muted);transform:translateX(-50%)}
+.reveal-mark{position:absolute;top:0;width:0;transition:left .9s cubic-bezier(.2,.8,.2,1)}
+.reveal-mark .lab{position:absolute;top:0;left:0;transform:translateX(-50%);font:600 12px/1.15 var(--body);white-space:nowrap}
+.reveal-mark .dot{position:absolute;top:21px;left:-8px;width:16px;height:16px;border-radius:50%;border:3px solid var(--surface);box-shadow:0 0 0 2px currentColor;background:currentColor}
+.reveal-mark.low .lab{top:60px}
+.reveal-mark.actual{color:var(--tomato)}
+.reveal-mark.avg{color:var(--muted)}
+.reveal-mark.you{color:var(--ink)}
+.callout{background:var(--frost);border:1.5px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:15px;color:var(--ink-2)}
+.callout b{color:var(--ink)}
+
+/* bars */
+.bars{display:grid;gap:9px}
+.bar-row{display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:4px 10px;align-items:center}
+.bar-row .name{font-size:14.5px;display:flex;gap:8px;align-items:center;min-width:0}
+.bar-row .name span{min-width:0}
+.bar-row .name.stack{flex-direction:column;align-items:flex-start;gap:3px}
+.bar-row .pct{font:500 14px/1 var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.bar-row .trk{grid-column:1 / -1;height:12px;position:relative}
+.bar-row .fill{height:100%;border-radius:0 4px 4px 0;background:var(--bar);min-width:2px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.bar-row.mine .fill{background:var(--tomato)}
+.bar-row .fill{position:relative;overflow:hidden}
+.bar-row .fill .often{position:absolute;inset:0 auto 0 0;background:var(--ink);opacity:.55}
+.bar-row.mine .fill{background:color-mix(in srgb, var(--tomato) 55%, var(--surface))}
+.bar-row.mine .fill .often{background:var(--tomato);opacity:1}
+.bar-row.mine .pct{color:var(--ink);font-weight:500}
+/* "you" marker: a hand-placed sticker word, not a pill */
+.you-tag{flex:none;font:800 13px/1 var(--display);color:var(--tomato);transform:rotate(-4deg);white-space:nowrap}
+.you-tag::before{content:"★ "}
+.zone{font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.zone:first-child{margin-top:0}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+
+.research{display:grid;gap:12px}
+.stat{display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px;align-items:baseline;padding-top:12px;border-top:1.5px dashed var(--line)}
+.stat:first-child{border-top:0;padding-top:0}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;color:var(--cobalt);font-variant-numeric:tabular-nums}
+.stat p{font-size:14.5px;color:var(--ink-2)}
+.stat a{color:var(--ink-2)}
+.fine{font-size:13px;color:var(--muted)}
+
+.follow form{display:grid;gap:10px}
+.follow label{font-size:14px;font-weight:600}
+.follow input[type=text]{width:100%;font:inherit;padding:12px 14px;border-radius:12px;border:2px solid var(--edge);background:var(--paper);color:var(--ink)}
+.follow input[type=text]:focus{outline:none;box-shadow:3px 3px 0 var(--cobalt)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips .opt{padding:9px 13px;font-size:14px}
+.react{display:grid;gap:10px;padding-top:4px}
+.react-q{font-weight:600;font-size:15.5px}
+.react-opt{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:6px}
+.toast{font-size:14px;color:var(--mint);font-weight:600}
+.share-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.linkbox{flex:1;min-width:0;font:13px/1.3 var(--mono);background:var(--paper);border:1.5px dashed var(--line);padding:12px;border-radius:10px;overflow-wrap:anywhere;color:var(--ink-2)}
+/* theme toggle: a tiny Y2K away-message switch */
+.themebar{max-width:640px;margin:0 auto;padding:14px max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));display:flex;justify-content:space-between;align-items:center;gap:10px}
+/* anonymous screen name: an early-2000s "signed on as" badge */
+/* anonymous identity: no pill, no status light. A shuffling name over a marching squiggle says "live, and disguised". */
+.anon-chip{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;font:500 11.5px/1.1 var(--mono);color:var(--ink-2)}
+.anon-chip .pre{white-space:nowrap;font-style:italic}
+.anon-name{position:relative;display:inline-block;font:800 14.5px/1.15 var(--display);letter-spacing:-.005em;color:var(--ink);white-space:nowrap;overflow:visible;padding-bottom:3px}
+.anon-chip .anon-name{font-size:15.5px;white-space:normal;max-width:min(64vw, 420px);padding-bottom:7px}
+.anon-name::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:6px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6'%3E%3Cpath d='M0 3 Q3 0 6 3 T12 3' fill='none' stroke='%23D6402A' stroke-width='1.8'/%3E%3C/svg%3E") repeat-x;
+  background-size:12px 6px;animation:march 1.1s linear infinite}
+.anon-chip .anon-name::after{bottom:0}
+@keyframes march{to{background-position:12px 0}}
+.promises .anon-name{font-size:1.02em}
+@media (max-width:440px){.theme-btn .lbl{display:none}.theme-btn{padding:7px 10px}}
+@media (prefers-reduced-motion: reduce){.anon-name::after{animation:none}}
+.theme-btn{appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;border:1.5px solid var(--edge);background:var(--frost);color:var(--ink);font:500 12.5px/1 var(--mono);letter-spacing:.04em;box-shadow:2px 2px 0 var(--shadow);transition:transform .12s, box-shadow .12s}
+.theme-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--shadow)}
+.theme-btn .ico{font-size:14px;line-height:1}
+footer{margin-top:28px;font-size:13px;color:var(--ink-2);text-align:center}
+</style>
+
+<script type="application/json" id="survey-data">
+{
+  "questions": [
+    {"id":"medium","type":"multi","max":3,"kicker":"First, the fun part","title":"What do you make?","hint":"Pick up to 3.","layout":"two","short":"What creators make","options":[["visual","Visual art & illustration"],["shortvideo","Short-form video"],["longvideo","Long-form video"],["written","Written content (Substack, X, etc.)"],["podcast","Podcast"],["photo","Photography"],["music","Music"],["writing","Writing & poetry"],["design","Design"],["other","Other"]]},
+    {"id":"stage","type":"single","kicker":"Where you're at","title":"How does creating fit in your life right now?","hint":"","short":"Creator stage","options":[["fulltime","It's my job, full-time or close to it"],["side","It's a side thing that brings in some money"],["passion","It's mostly for fun and fulfillment, money or not"]]},
+    {"id":"chores","type":"multi","max":3,"kicker":"A little venting","title":"Which parts of creative life would you happily never do again?","hint":"Pick up to 3. We all have them.","layout":"two","short":"Chores creators would hand off","options":[["admin","Invoicing, scheduling & email"],["promo","Posting, marketing & growing an audience"],["production","Editing, formatting & technical work"],["friction","Research, getting started & creative blocks"],["bizdev","Finding clients, pitching & negotiating"],["none","Honestly? I love all of it"]],"exclusive":["none"]},
+    {"id":"guess","type":"people","kicker":"Your best guess","title":"Just a hunch: Out of 10 creative people you know, how many do you think use AI somewhere in their creative work?","hint":"No need to know for sure. Tap a person or drag the slider.","short":"Your guess"},
+    {"id":"feel","type":"feel","kicker":"Vibe check","title":"When AI comes up in creative circles, you feel…","hint":"Pick the one that fits best.","short":"How creators feel","options":[["giddy","Giddy — I'm fascinated. Tell me everything."],["curious","Curious — I'm interested, but still figuring it out."],["torn","Torn — Part of me loves it; part of me has reservations."],["mute","On Mute — I tune out when AI comes up. I'm just not interested in the conversation."],["overit","Over It — I'm actively tired of hearing about AI. Can we talk about literally anything else?"]]},
+    {"id":"uses","type":"multi","check":"circle","layout":"two","kicker":"No-judgment zone","title":"Where does AI show up in your work today?","hint":"Pick all that apply.","short":"Where creators use AI","options":[["brainstorm","Brainstorming and ideation"],["research","Research and learning"],["writing","Writing and editing"],["visual","Visual creation and design"],["music","Music and audio"],["video","Video and animation"],["coding","Coding and technical work"],["marketing","Marketing and audience growth"],["ops","Business operations and administration"],["feedback","Feedback and critique"],["none","I don't use AI in my creative work"]],"exclusive":["none"]},
+    {"id":"talk","type":"chatter","kicker":"Group chat check","title":"How often do you hear creative friends openly talk about how they're actually using AI?","hint":"Tap one and peek at the group chat.","short":"How often friends talk openly about their AI use","options":[["never","Never"],["rarely","Rarely"],["sometimes","Sometimes"],["often","Often"],["constantly","Constantly"]]},
+    {"id":"hesitation","type":"multi","max":3,"exclusive":["none"],"kicker":"Real talk","title":"What are your biggest hesitations, if any, when using AI in creative work?","hint":"Pick up to 3.","short":"Biggest hesitation","options":[["quality","It doesn't produce work that's good enough."],["personal","It makes creative work feel less personal or original."],["copyright","I'm worried about copyright, ownership, or compensation."],["training","I'm uncomfortable with how AI models are trained."],["perception","I'm worried about how audiences or other creatives will perceive me."],["reliability","I don't trust the accuracy or reliability of AI."],["dependence","I'm worried about becoming dependent on it."],["value","It feels like it undermines the value of human creativity."],["none","I don't really have any hesitations."],["other","Something else."]]},
+    {"id":"line","type":"ladder","kicker":"Boundaries","title":"Where's your line? AI is fine for…","hint":"Tap the last thing you're okay with. Everything above it counts too.","short":"Where creators draw the line","options":[["none","Nothing. I will never use it."],["personal","Personal use, outside of work"],["around","Okay for work, if it's the business stuff around the art"],["process","Behind-the-scenes parts of the creative process, never the final piece"],["final","Parts of the final piece, if it's disclosed"],["anything","Whatever makes the work better"]]},
+    {"id":"disclose","type":"single","kicker":"Last one: just between us","title":"Have you ever avoided mentioning that you used AI in something you created?","hint":"","short":"Avoided mentioning AI use","options":[["frequently","Yes, frequently."],["occasionally","Yes, occasionally."],["once","Once or twice."],["transparent","No, I'm comfortable being transparent."],["nouse","I don't use AI."]]}
+  ],
+  "statuses": {
+    "notyou": {"name": "It's Not You, It's Me", "line": "You don't use AI and you're not particularly interested. Boundaries are attractive.", "roast": "You took one look at AI and said “absolutely not,” and honestly? Respect. You're out here making everything by hand like the printing press just dropped. Purist energy. Just don't get smug about it at brunch."},
+    "singlecurious": {"name": "Single & Curious", "line": "You're not using AI yet, but you're open to seeing what happens.", "roast": "You keep “accidentally” reading about AI at 1am. You're not using it, you're just… looking. Researching. Asking for a friend. Babe, we can all see you lurking. Just say hi."},
+    "complicated": {"name": "It's Complicated", "line": "You use AI, but you have mixed feelings about the relationship. That tension is real, and you're far from alone in it.", "roast": "You use it, you resent that you use it, and you'd rather not discuss it. You've rage-closed the tab twice this week and reopened it ten minutes later. Have you considered couples therapy?"},
+    "fwb": {"name": "Friends With Benefits", "line": "You use AI when it's useful. No commitment, no emotional attachment.", "roast": "You use AI when it's convenient and ghost it the second you're done. No pet names, no feelings, no labels. Honestly iconic. It's probably telling the other chatbots you're emotionally unavailable."},
+    "situationship": {"name": "Situationship", "line": "AI is helping you out, but you're not especially comfortable talking about it with other creative people. Plenty of creators are in the exact same spot.", "roast": "AI helps you every single week and you've told exactly no one. You'd rather walk into the sea than say “I used AI for that” in the group chat. Plot twist: half the group chat is doing the same thing."},
+    "workspouse": {"name": "Work Spouse", "line": "AI handles the business, admin and tedious tasks. The creative work stays primarily human.", "roast": "AI does your invoices, your emails and your scheduling, and never once asks for credit. You keep the art, it keeps the spreadsheets. Healthiest relationship you've ever had, frankly. Buy it a mug."},
+    "open": {"name": "Open Relationship", "line": "AI is part of your creative process, and you're comfortable talking about it.", "roast": "AI's in your process and you'll tell anyone who asks, plus several people who didn't. Very evolved. Very “we communicate.” Slightly exhausting at parties, but at least you're honest."},
+    "married": {"name": "Married to the Machine", "line": "AI is woven into practically everything you do. This one's committed.", "roast": "AI is in your brainstorms, your drafts, your edits and probably your dreams. You've stopped saying “I made this” and started saying “we.” We're happy for you. Blink twice if you need help."}
+  }
+}
+</script>
+
+<div class="themebar"><span class="anon-chip" id="anon-chip" title="A random name made on this device. It is never saved with your answers."></span><button class="theme-btn" id="theme-btn" type="button" aria-pressed="false"><span class="ico" aria-hidden="true">☾</span><span class="lbl">Dark mode</span></button></div>
+<div class="wrap" id="app" aria-live="polite"></div>
+<footer class="wrap" style="padding-block:0 32px">Anonymous by design. No names, no emails, no IP addresses stored with your answers.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ============ CONFIG ============
+   endpoint: the Google Apps Script web app (ends in /exec) that saves answers and returns totals.
+   liveHosts: the page talks to that endpoint only when it is opened on one of these hosts, so the
+   claude.ai preview and local copies keep using sample data. shareUrl: the link people pass on. */
+var CONFIG = {
+  endpoint: "https://script.google.com/macros/s/AKfycbx5vMlhNpQpCD-DdqWLHbXbCMNIuLN7PIMQboelpViyS3pihNUrleFrQxTYmBcp4H-c/exec",
+  liveHosts: ["airelationshipstatus.com", "www.airelationshipstatus.com"],
+  shareUrl: "https://airelationshipstatus.com"
+};
+var ON_LIVE_HOST = CONFIG.liveHosts.indexOf(location.hostname) >= 0;
+
+var DATA = JSON.parse(document.getElementById("survey-data").textContent);
+var Q = DATA.questions, STATUSES = DATA.statuses;
+/* Activity zones for Q6. "Around the work" is support and business; the other two touch the creative work itself. */
+var AROUND = ["research","coding","marketing","ops"], PROCESS = ["brainstorm","feedback"], MAKING = ["writing","visual","music","video"];
+var STORE_KEY = "yrwai_v2";
+
+var app = document.getElementById("app");
+var state = { i: -1, answers: {}, results: null, mode: detectMode() };
+
+function detectMode(){
+  if (window.google && google.script && google.script.run) return "gas";
+  if (CONFIG.endpoint && ON_LIVE_HOST) return "fetch";
+  return "preview";
+}
+function store(k, v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); }catch(e){ return null; } }
+
+/* ---------- anonymous screen name ----------
+   Made at random on this device so people can see they're anonymous. Never sent with answers. */
+var ANON = (function(){
+  var saved = store("yrwai_name3"); if (saved) return saved;
+  var A = ["Feral","Unhinged","Dramatic","Overcaffeinated","Haunted","Delulu","Chaotic","Sleepless","Suspicious","Theatrical","Rogue","Petty","Divorced","Bootleg","Cursed","Litigious","Menacing","Spicy","Emotional","Disgraced","Glittery","Sweaty","Moody","Problematic"];
+  var N = ["Possum","Raccoon","Goose","Gremlin","Pigeon","Ferret","Goblin","Croissant","Wizard","Mothman","Duchess","Llama","Toaster","Cryptid","Hamster","Diva","Gargoyle","Lasagna","Pickle","Burrito","Disco","Karaoke","Kombucha","Cowboy"];
+  var r = function(n){ try{ var b = new Uint32Array(1); crypto.getRandomValues(b); return b[0] % n; }catch(e){ return Math.floor(Math.random()*n); } };
+  var name = A[r(A.length)] + " " + N[r(N.length)] + " " + (1000 + r(9000));
+  store("yrwai_name3", name);
+  return name;
+})();
+/* "live" anonymous identity: the name shuffles like a slot machine, then settles over a marching squiggle */
+function scrambleInto(el, text){
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce){ el.textContent = text; return; }
+  var pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", start = Date.now(), dur = 900;
+  var t = setInterval(function(){
+    var k = Math.min(1, (Date.now() - start) / dur), keep = Math.floor(text.length * k);
+    el.textContent = text.slice(0, keep) + text.slice(keep).replace(/[^ ]/g, function(){ return pool[Math.floor(Math.random()*pool.length)]; });
+    if (k >= 1){ clearInterval(t); el.textContent = text; }
+  }, 45);
+}
+function anonName(){ return '<b class="anon-name">' + esc(ANON) + '</b>'; }
+document.getElementById("anon-chip").innerHTML = '<span class="pre">incognito as</span> ' + anonName();
+scrambleInto(document.querySelector("#anon-chip .anon-name"), ANON);
+
+/* ---------- theme: follows the system until the visitor picks one ---------- */
+(function(){
+  var KEY = "yrwai_theme", root = document.documentElement, btn = document.getElementById("theme-btn");
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function saved(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+  function isDark(){ var t = root.getAttribute("data-theme"); return t ? t === "dark" : !!(mq && mq.matches); }
+  function paint(){
+    var d = isDark();
+    btn.setAttribute("aria-pressed", d ? "true" : "false");
+    btn.querySelector(".ico").textContent = d ? "☀" : "☾";
+    btn.querySelector(".lbl").textContent = d ? "Light mode" : "Dark mode";
+  }
+  var t = saved(); if (t === "dark" || t === "light") root.setAttribute("data-theme", t);
+  btn.onclick = function(){
+    var next = isDark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try{ localStorage.setItem(KEY, next); }catch(e){}
+    paint();
+  };
+  if (mq && mq.addEventListener) mq.addEventListener("change", paint);
+  paint();
+})();
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+function h(html){ var t=document.createElement("template"); t.innerHTML=html.trim(); return t.content; }
+function pct(n, d){ return d ? Math.round(100*n/d) : 0; }
+
+/* ---------- derived answers ---------- */
+// Q6 is stored as ["brainstorm:often", "research:some", ...] or ["none"].
+function usesMap(a){ var m = {}; (a.uses||[]).forEach(function(x){ var k = String(x).split(":")[0]; if (k !== "none") m[k] = true; }); return m; }
+function usesAI(a){ return Object.keys(usesMap(a)).length > 0; }
+/* Relationship status. Weighs behavior (what and how often), sentiment (feel), creative integration
+   (whether AI touches the work itself) and openness (talk, disclosure). Frequency alone never decides it. */
+function statusOf(a){
+  var m = usesMap(a), acts = Object.keys(m), feel = a.feel, disclose = a.disclose;
+  if (!acts.length){
+    var notInto = feel === "mute" || feel === "overit" || a.line === "none";
+    return notInto ? "notyou" : "singlecurious";
+  }
+  var creative = acts.filter(function(k){ return PROCESS.indexOf(k) >= 0 || MAKING.indexOf(k) >= 0; }).length;
+  var hides = disclose === "frequently" || disclose === "occasionally";
+  var uneasy = false; // discomfort with talking about it now comes from disclosure (Q10)
+  var mixed = feel === "torn" || feel === "overit";
+  var warm = feel === "giddy" || feel === "curious";
+  var opens = disclose === "transparent" || disclose === "once";
+  var hearsTalk = ["sometimes","often","constantly"].indexOf(a.talk) >= 0;
+  // deep integration: broad use, much of it often, reaching into the creative work, and not hidden
+  if (acts.length >= 6 && creative >= 3 && !hides) return "married";
+  if (hides || uneasy) return "situationship";
+  if (mixed) return "complicated";
+  if (!creative) return "workspouse";
+  if (opens && (warm || hearsTalk)) return "open";
+  return "fwb";
+}
+function activeQuestions(){ return Q.filter(function(q){ return !q.onlyIfUses || usesAI(state.answers); }); }
+
+/* ---------- aggregation (same logic as Code.gs, used for preview mode) ---------- */
+function aggregate(rows){
+  var agg = { n: rows.length, q: {} };
+  rows.forEach(function(r){
+    Object.keys(r).forEach(function(k){
+      var v = r[k]; if (v===undefined || v===null || v==="") return;
+      var slot = agg.q[k] || (agg.q[k] = { answered:0, counts:{}, sum:0 });
+      slot.answered++;
+      (Array.isArray(v) ? v : [v]).forEach(function(x){ slot.counts[x] = (slot.counts[x]||0) + 1; });
+      if (typeof v === "number") slot.sum += v;
+    });
+  });
+  return agg;
+}
+
+/* Preview-only sample data, clearly labelled on screen. Seeded so it's stable. */
+function sampleRows(){
+  var seed = 7; function rnd(){ seed = (seed*16807) % 2147483647; return (seed-1)/2147483646; }
+  function pick(weights){ var keys=Object.keys(weights), t=0, s=0; keys.forEach(function(k){t+=weights[k];}); var x=rnd()*t; for(var i=0;i<keys.length;i++){ s+=weights[keys[i]]; if(x<=s) return keys[i]; } return keys[0]; }
+  function some(weights, max){ var out=[]; Object.keys(weights).forEach(function(k){ if(rnd()<weights[k]) out.push(k); }); return max? out.slice(0,max): out; }
+  var rows=[];
+  var ACTS = {brainstorm:.5,research:.55,writing:.4,visual:.2,music:.1,video:.18,coding:.15,marketing:.35,ops:.45,feedback:.2};
+  for (var i=0;i<137;i++){
+    var a={};
+    a.medium = some({visual:.3,shortvideo:.35,longvideo:.25,written:.25,podcast:.15,photo:.18,music:.25,writing:.2,design:.15,other:.05},3); if(!a.medium.length) a.medium=["visual"];
+    a.stage = pick({fulltime:3,side:4,passion:4});
+    a.chores = some({admin:.55,promo:.45,production:.3,friction:.25,bizdev:.45},3); if(!a.chores.length) a.chores=["none"];
+    a.guess = [1,2,2,3,3,3,4,4,5,5,6,7][Math.floor(rnd()*12)]*10;
+    var user = rnd() < .68;
+    a.uses = user ? Object.keys(ACTS).filter(function(k){ return rnd() < ACTS[k]; }) : ["none"];
+    if (user && !a.uses.length) a.uses = ["research"];
+    a.feel = user ? pick({giddy:3,curious:5,torn:4,mute:1,overit:1})
+                  : pick({giddy:1,curious:4,torn:2,mute:3,overit:4});
+    a.talk = pick({never:3,rarely:5,sometimes:4,often:2,constantly:1});
+    a.hesitation = some({quality:.3,personal:.4,copyright:.4,training:.3,perception:.3,reliability:.2,dependence:.2,value:.3,other:.05},3); if(!a.hesitation.length) a.hesitation=["none"];
+    a.line = pick({none:2,personal:2,around:4,process:4,final:2,anything:1});
+    a.disclose = user ? pick({frequently:2,occasionally:4,once:3,transparent:4}) : "nouse";
+    a.uses_ai = usesAI(a) ? "yes" : "no";
+    a.status = statusOf(a);
+    rows.push(a);
+  }
+  return rows;
+}
+
+/* ---------- backend ---------- */
+function payload(){
+  var a = JSON.parse(JSON.stringify(state.answers));
+  a.uses_ai = usesAI(a) ? "yes" : "no";
+  a.status = statusOf(a);
+  return a;
+}
+function call(fn, arg){
+  return new Promise(function(resolve, reject){
+    if (state.mode === "gas"){
+      var r = google.script.run.withSuccessHandler(resolve).withFailureHandler(reject);
+      return arg===undefined ? r[fn]() : r[fn](arg);
+    }
+    if (state.mode === "fetch"){
+      var req = fn === "getResults"
+        ? fetch(CONFIG.endpoint + "?api=results")
+        : fetch(CONFIG.endpoint, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({ fn: fn, data: arg }) });
+      return req.then(function(r){ return r.json(); }).then(function(j){ if (j && j.error) reject(new Error(j.error)); else resolve(j); }, reject);
+    }
+    // preview
+    setTimeout(function(){
+      if (fn === "saveFollowup" || fn === "saveReaction") return resolve({ ok:true, preview:true });
+      var rows = sampleRows(); if (fn === "submit") rows.push(arg);
+      resolve(aggregate(rows));
+    }, 700);
+  });
+}
+
+/* ---------- screens ---------- */
+function previewBanner(){
+  return state.mode === "preview" ? '<div class="banner"><b>Preview mode.</b> Results below use made-up sample data so you can see the layout. Real responses appear once the Google Sheet backend is connected.</div>' : "";
+}
+
+function renderIntro(){
+  var done = store(STORE_KEY);
+  app.innerHTML = previewBanner() + '\
+  <section class="intro">\
+    <p class="eyebrow">A 3-minute quiz for creators</p>\
+    <h1>Your <em>AI</em> Relationship Status<span class="spark" aria-hidden="true"></span></h1>\
+    <p class="lede">Everyone has opinions about AI and art, but almost nobody says what they actually do. Answer 10 quick questions, then see how you compare with everyone else.</p>\
+    <ul class="promises">\
+      <li><span class="tick">✓</span><span><b>Anonymous.</b> Today you\'re ' + anonName() + ', a random name made just for you. No real names, emails or accounts, and nothing ties answers to you.</span></li>\
+      <li><span class="tick">✓</span><span><b>No wrong answers.</b> "Never touch it" and "use it daily" are equally welcome.</span></li>\
+      <li><span class="tick">✓</span><span><b>You see the results first.</b> Right after the last question.</span></li>\
+    </ul>\
+    <div class="row">\
+      <button class="btn heart" id="start">' + (done ? "See your results" : "Let's find out") + ' <span aria-hidden="true">→</span></button>\
+      ' + (done && state.mode==="preview" ? '<button class="btn ghost" id="redo">Take it again (preview only)</button>' : '') + '\
+    </div>\
+    <p class="byline">A Stanford student\'s project on how creators really feel about AI. Not affiliated with any AI company.</p>\
+  </section>';
+  var introName = app.querySelector(".promises .anon-name"); if (introName) scrambleInto(introName, ANON);
+  document.getElementById("start").onclick = function(){
+    if (done){ state.answers = done; return showResults(false); }
+    state.i = 0; renderQuestion();
+  };
+  var redo = document.getElementById("redo");
+  if (redo) redo.onclick = function(){ store(STORE_KEY, null); try{localStorage.removeItem(STORE_KEY);}catch(e){} state.answers={}; state.i=0; renderQuestion(); };
+}
+
+function isAnswered(q){
+  var v = state.answers[q.id];
+  if (q.type === "multi" || q.type === "freq") return Array.isArray(v) && v.length > 0;
+  if (q.type === "ratings") return !!v && q.options.every(function(o){ return v[o[0]]; });
+  return v !== undefined && v !== null && v !== "";
+}
+
+function optButton(q, id, label, extra){
+  var v = state.answers[q.id];
+  var on = q.type === "multi" ? (v||[]).indexOf(id) >= 0 : String(v) === String(id);
+  return '<button type="button" class="opt ' + (q.type==="multi"?"":"radio") + (q.check === "circle" ? " circle" : "") + '" data-id="' + esc(id) + '" aria-pressed="' + on + '">' + (extra||"") + '<span class="box" aria-hidden="true"></span><span>' + esc(label) + '</span></button>';
+}
+
+function renderQuestion(){
+  var qs = activeQuestions(), q = qs[state.i], total = Q.length, pos = Q.indexOf(q);
+  // preview only: the progress dots become buttons so you can jump straight to any question
+  var jump = state.mode === "preview";
+  var dots = Q.map(function(qq, k){
+    var cls = (k <= pos ? "on" : "") + (k === pos ? " here" : "");
+    return jump ? '<button type="button" class="dot-btn ' + cls + '" data-jump="' + k + '" title="Jump to question ' + (k+1) + '" aria-label="Jump to question ' + (k+1) + ': ' + esc(qq.title) + '"' + (k === pos ? ' aria-current="step"' : '') + '><i></i></button>'
+                : '<i class="' + cls + '"></i>';
+  }).join("");
+  var body = "";
+  if (q.type === "single" || q.type === "multi"){
+    if (q.groups){
+      body = '<div class="groups">' + q.groups.map(function(g){ return '<div class="group" role="group" aria-label="' + esc(g.label) + '"><div class="group-head"><p class="group-label">' + esc(g.label) + '</p>' + (g.note ? '<span class="group-note">(' + esc(g.note) + ')</span>' : '') + '</div><div class="opts">' + g.options.map(function(o){ return optButton(q, o[0], o[1]); }).join("") + '</div></div>'; }).join("") + '</div>';
+    } else {
+      body = '<div class="opts ' + (q.layout||"") + '">' + q.options.map(function(o){ return optButton(q, o[0], o[1]); }).join("") + '</div>';
+    }
+  } else if (q.type === "ratings"){
+    var rv = state.answers[q.id] || {};
+    body = '<div class="ratings">' + q.options.map(function(o){
+      return '<div class="rate-row" role="radiogroup" aria-label="' + esc(o[1]) + '"><p class="rate-name">' + esc(o[1]) + '</p><div class="rate-btns">' +
+        q.scale.map(function(sc){
+          var on = String(rv[o[0]]) === sc[0];
+          return '<button type="button" class="rate" role="radio" data-item="' + o[0] + '" data-v="' + sc[0] + '" aria-checked="' + on + '"><b>' + sc[0] + '</b><span>' + esc(sc[1]) + '</span></button>';
+        }).join("") + '</div></div>';
+    }).join("") + '</div>';
+  } else if (q.type === "feel"){
+    body = '<div class="feel">' + q.options.map(function(o){
+      var on = state.answers[q.id] === o[0], dash = o[1].indexOf(" — "), cut = o[1].indexOf(". ");
+      var txt = dash > 0 ? '<b>' + esc(o[1].slice(0, dash)) + '</b> <span>— ' + esc(o[1].slice(dash+3)) + '</span>'
+        : cut > 0 ? '<b>' + esc(o[1].slice(0, cut+1)) + '</b> <span>' + esc(o[1].slice(cut+2)) + '</span>' : '<b>' + esc(o[1]) + '</b>';
+      return '<button type="button" class="opt radio" data-id="' + o[0] + '" aria-pressed="' + on + '"><span class="feel-txt">' + txt + '</span><span class="box" aria-hidden="true"></span></button>';
+    }).join("") + '</div>';
+  } else if (q.type === "freq"){
+    var fm = {}; (state.answers[q.id]||[]).forEach(function(x){ var p = x.split(":"); fm[p[0]] = p[1] || "on"; });
+    var lv = {}; q.levels.forEach(function(l){ lv[l[0]] = l[1]; });
+    body = '<div class="freq">' + q.options.filter(function(o){ return o[0] !== "none"; }).map(function(o){
+      var st = fm[o[0]] || "";
+      return '<button type="button" class="fchip" data-id="' + o[0] + '" data-lvl="' + st + '" aria-label="' + esc(o[1]) + ': ' + (st ? lv[st] : "not used") + '"><span class="fchip-name">' + esc(o[1]) + '</span><span class="fchip-meter" aria-hidden="true"><i></i><i></i></span><span class="fchip-tag" aria-hidden="true">' + (st ? esc(lv[st]) : "") + '</span></button>';
+    }).join("") + '</div>' + q.options.filter(function(o){ return o[0] === "none"; }).map(function(o){
+      return '<button type="button" class="opt radio fnone" data-id="none" aria-pressed="' + (fm.none === "on") + '"><span class="box" aria-hidden="true"></span><span>' + esc(o[1]) + '</span></button>';
+    }).join("");
+  } else if (q.type === "chatter"){
+    body = '<div class="gc" aria-hidden="true"><div class="gc-top"><span class="gc-dot"></span>creative friends 🎨 <small>4 online</small></div><div class="gc-body" id="gc-body"></div></div>\
+      <div class="tiles" role="radiogroup">' + q.options.map(function(o){
+        return '<button type="button" class="opt radio tile" data-id="' + o[0] + '" aria-pressed="' + (state.answers[q.id] === o[0]) + '"><span class="vol" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="lbl">' + esc(o[1]) + '</span><span class="box" aria-hidden="true"></span></button>';
+      }).join("") + '</div>';
+  } else if (q.type === "spectrum"){
+    var sv = state.answers[q.id];
+    body = '<div class="spec" id="spec"><svg class="spec-pic" viewBox="0 0 320 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9FBDE8"/><stop offset=".55" stop-color="#D3C5EE"/><stop offset="1" stop-color="#F3B8B5"/></linearGradient></defs><rect width="320" height="170" fill="url(#sky)"/><circle cx="236" cy="62" r="44" fill="#F7C85A" opacity=".45"/><circle cx="236" cy="62" r="30" fill="#F0A531"/><path d="M30 46c8-12 30-12 36 0 12-2 18 10 10 16H26c-10-4-6-16 4-16z" fill="#FFF7EC"/><path d="M118 30c6-8 20-8 24 0 8-1 12 7 6 11h-34c-7-3-4-11 4-11z" fill="#FFF7EC" opacity=".9"/><path d="M0 118c40-30 90-34 140-12s100 22 180-14v78H0z" fill="#8FCB6E"/><path d="M0 140c50-20 110-18 170-2s110 10 150-6v38H0z" fill="#2747C9"/><path d="M0 158c60-10 120-8 190 0s100 2 130-4v16H0z" fill="#211C3D" opacity=".85"/><g fill="#D6402A"><circle cx="62" cy="120" r="7"/><circle cx="74" cy="114" r="5"/><circle cx="52" cy="112" r="4.5"/></g><g fill="#F0A531"><circle cx="196" cy="126" r="6"/><circle cx="206" cy="132" r="4"/></g><g fill="#EB6FA0"><circle cx="270" cy="118" r="6"/><circle cx="282" cy="124" r="4"/></g><path d="M160 52l4 11 11 4-11 4-4 11-4-11-11-4 11-4z" fill="#FFE07A"/><path d="M96 80l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5z" fill="#FFFFFF"/><path d="M290 30l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#FFFFFF"/></svg><p class="spec-label" id="spec-label" role="status"></p></div>\
+      <input type="range" id="spec-range" min="1" max="7" step="1" value="' + (sv || 4) + '" aria-label="' + esc(q.title) + '" aria-valuetext="">\
+      <div class="scale-ends"><span>Less creative</span><span>More creative</span></div>';
+  } else if (q.type === "ladder"){
+    body = '<div class="ladder">' + q.options.map(function(o, k){
+        return '<button type="button" class="opt radio ' + (k ? "rung" : "rung-none") + '" data-id="' + o[0] + '" aria-pressed="' + (state.answers[q.id] === o[0]) + '"><span class="rung-txt">' + esc(o[1]) + '</span><span class="rung-mark" aria-hidden="true"></span><span class="box" aria-hidden="true"></span></button>' + (k === 0 ? '<p class="ladder-or">or AI is fine for everything up to…</p>' : '');
+      }).join("") + '</div>';
+  } else if (q.type === "people"){
+    var val = state.answers.guess === undefined ? 5 : state.answers.guess/10;
+    var person = function(k){ return '<svg viewBox="0 0 24 40" role="button" tabindex="-1" data-k="' + k + '" aria-hidden="true"><g class="p' + (k < val ? " on" : "") + '"><circle cx="12" cy="7" r="6"/><path d="M2 38c0-11 3-20 10-20s10 9 10 20z"/></g></svg>'; };
+    var ppl = ""; for (var k=0;k<10;k++) ppl += person(k);
+    body = '<div class="people" id="ppl">' + ppl + '</div>\
+      <p class="slider-read" id="sread">I\'d guess <span>' + val + '</span> out of 10</p>\
+      <input type="range" id="guess-range" min="0" max="10" step="1" value="' + val + '" aria-label="How many of 10 creators you know use AI">\
+      <div class="scale-ends"><span>None of them</span><span>All 10</span></div>';
+    if (state.answers.guess === undefined) state.answers.guess = val*10;
+  }
+  app.innerHTML = previewBanner() + '\
+    <div class="progress"><div class="dots">' + dots + '</div><span class="count">' + (pos+1) + ' / ' + total + '</span></div>\
+    <section class="card" aria-labelledby="qt">\
+      <p class="eyebrow">' + esc(q.kicker) + '</p>\
+      <h2 id="qt">' + esc(q.title) + '</h2>\
+      ' + (q.hint ? '<p class="hint">' + esc(q.hint) + '</p>' : '<div style="height:12px"></div>') + '\
+      <form id="qform" onsubmit="return false">' + body + (q.type === "multi" && q.max ? '<p class="max-note" id="max-note" role="status" aria-live="polite"></p>' : '') + '<label class="hp">Leave this empty<input id="hp" tabindex="-1" autocomplete="off"></label></form>\
+      <div class="nav">\
+        <button class="btn ghost" id="back">' + (state.i === 0 ? "← Intro" : "← Back") + '</button>\
+        ' + (state.i === qs.length-1 ? '<button class="btn heart" id="next">See my results <span class="spark" aria-hidden="true"></span></button>' : '<button class="btn" id="next">Next <span aria-hidden="true">→</span></button>') + '\
+      </div>\
+    </section>';
+  wireQuestion(q);
+  paintWidget(q);
+  app.querySelectorAll("[data-jump]").forEach(function(b){ b.onclick = function(){
+    var target = Q[+b.getAttribute("data-jump")], k = activeQuestions().indexOf(target);
+    if (k >= 0 && k !== state.i){ state.i = k; renderQuestion(); }
+  }; });
+  var t = document.getElementById("qt"); if (t && state.i > 0) t.setAttribute("tabindex","-1"), t.focus({preventScroll:true});
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* "pick up to N": dim the rest once they hit the limit, and explain if they tap another */
+function maxNote(q, tried){
+  var note = document.getElementById("max-note"), form = document.getElementById("qform"); if (!note) return;
+  var full = (state.answers[q.id] || []).length >= q.max && (q.exclusive || []).indexOf((state.answers[q.id] || [])[0]) < 0;
+  form.classList.toggle("at-max", full);
+  if (tried){
+    note.textContent = "You've picked " + q.max + ". Unselect one to choose a different one.";
+    note.classList.remove("nudge"); void note.offsetWidth; note.classList.add("nudge");
+  } else if (!full) note.textContent = "";
+}
+function wireQuestion(q){
+  var next = document.getElementById("next");
+  function refresh(){ next.disabled = !isAnswered(q); }
+  refresh();
+  app.querySelectorAll(".opt").forEach(function(b){
+    b.onclick = function(){
+      var id = b.getAttribute("data-id");
+      if (q.type === "multi"){
+        var cur = (state.answers[q.id] || []).slice(), ex = q.exclusive || [];
+        var at = cur.indexOf(id);
+        if (at >= 0) cur.splice(at, 1);
+        else {
+          if (ex.indexOf(id) >= 0) cur = [id];
+          else {
+            cur = cur.filter(function(x){ return ex.indexOf(x) < 0; });
+            // at the limit: don't swap anything out silently; ask them to unselect one first
+            if (q.max && cur.length >= q.max){ maxNote(q, true); return; }
+            cur.push(id);
+          }
+        }
+        state.answers[q.id] = cur;
+        app.querySelectorAll(".opt").forEach(function(o){ o.setAttribute("aria-pressed", cur.indexOf(o.getAttribute("data-id")) >= 0); });
+        maxNote(q, false);
+      } else {
+        state.answers[q.id] = q.type === "spectrum" ? +id : (q.type === "freq" ? [id] : id);
+        if (q.type === "freq") app.querySelectorAll(".fchip").forEach(function(c){ c.setAttribute("data-lvl", ""); c.querySelector(".fchip-tag").textContent = ""; });
+        app.querySelectorAll(".opt").forEach(function(o){ o.setAttribute("aria-pressed", o === b); });
+        paintWidget(q);
+      }
+      refresh();
+    };
+  });
+  app.querySelectorAll(".rate").forEach(function(b){
+    b.onclick = function(){
+      var item = b.getAttribute("data-item"), cur = state.answers[q.id] || (state.answers[q.id] = {});
+      cur[item] = +b.getAttribute("data-v");
+      app.querySelectorAll('.rate[data-item="' + item + '"]').forEach(function(o){ o.setAttribute("aria-checked", o === b); });
+      refresh();
+    };
+  });
+  app.querySelectorAll(".fchip").forEach(function(c){
+    c.onclick = function(){
+      var id = c.getAttribute("data-id"), order = ["", "some", "often"], cur = c.getAttribute("data-lvl") || "";
+      var nxt = order[(order.indexOf(cur) + 1) % order.length], labels = {};
+      q.levels.forEach(function(l){ labels[l[0]] = l[1]; });
+      c.setAttribute("data-lvl", nxt);
+      c.querySelector(".fchip-tag").textContent = nxt ? labels[nxt] : "";
+      c.setAttribute("aria-label", c.querySelector(".fchip-name").textContent + ": " + (nxt ? labels[nxt] : "not used"));
+      var list = (state.answers[q.id] || []).filter(function(x){ var k = x.split(":")[0]; return k !== id && k !== "none"; });
+      if (nxt) list.push(id + ":" + nxt);
+      state.answers[q.id] = list;
+      var nb = app.querySelector(".fnone"); if (nb) nb.setAttribute("aria-pressed", "false");
+      refresh();
+    };
+  });
+  var spr = document.getElementById("spec-range");
+  if (spr){ spr.oninput = function(){ state.answers[q.id] = +spr.value; paintWidget(q); refresh(); }; }
+  var range = document.getElementById("guess-range");
+  if (range){
+    var setVal = function(v){
+      v = Math.max(0, Math.min(10, v)); range.value = v; state.answers.guess = v*10;
+      document.querySelector("#sread span").textContent = v;
+      app.querySelectorAll("#ppl svg").forEach(function(s, k){ s.querySelector("g").setAttribute("class", "p" + (k < v ? " on" : "")); });
+      refresh();
+    };
+    range.oninput = function(){ setVal(+range.value); };
+    app.querySelectorAll("#ppl svg").forEach(function(s, k){ s.style.cursor="pointer"; s.onclick = function(){ setVal(+range.value === k+1 ? k : k+1); }; });
+  }
+  document.getElementById("back").onclick = function(){ if (state.i === 0){ state.i=-1; renderIntro(); } else { state.i--; renderQuestion(); } };
+  next.onclick = function(){
+    if (!isAnswered(q)) return;
+    if (document.getElementById("hp").value) return; // bot
+    var qs = activeQuestions();
+    if (state.i < qs.length - 1){ state.i++; renderQuestion(); }
+    else showResults(true);
+  };
+}
+
+/* ---------- interactive question widgets ---------- */
+var CHAT = {
+  "": [["l","new piece is finally done 🎨"],["r","OBSESSED"],["sys","tap an answer below 👇"]],
+  never: [["l","new piece is finally done 🎨"],["r","OBSESSED. framing it?"],["l","gallery thing friday?"],["sys","Nobody here has ever said how they actually use AI."]],
+  rarely: [["l","new piece is finally done 🎨"],["r","obsessed"],["l","random but… does anyone actually use AI for invoices? 👀"],["r","…anyway, friday?"]],
+  sometimes: [["l","ngl I used AI to untangle my grant app"],["r","wait same, for captions"],["l","never for the actual art tho"],["r","obviously 💅"]],
+  often: [["l","how are you all using AI for editing rn?"],["r","transcripts. saves me hours"],["l","I brainstorm with it, then sketch myself"],["r","stealing that"]],
+  constantly: [["l","ok AI workflow swap, go"],["r","brainstorm → my sketch → AI cleanup"],["l","mine's research → draft → AI critique"],["r","we talk about our AI setups more than art now 😭"]]
+};
+function paintWidget(q){
+  var v = state.answers[q.id];
+  if (q.type === "chatter"){
+    var box = document.getElementById("gc-body"); if (!box) return;
+    box.innerHTML = (CHAT[v || ""]).map(function(m, k){ return '<p class="msg ' + m[0] + '" style="animation-delay:' + (k*0.12) + 's">' + esc(m[1]) + '</p>'; }).join("");
+  }
+  if (q.type === "spectrum"){
+    var spec = document.getElementById("spec"), on = v !== undefined, val = on ? v : 4, o = q.options[val-1];
+    var t = on ? (val-1)/6 : 0;   // 0 = black & white and blurry, 1 = full color, sharp
+    spec.style.setProperty("--gray", (1-t).toFixed(3));
+    spec.style.setProperty("--blur", ((1-t)*7).toFixed(2) + "px");
+    spec.style.setProperty("--sat", (0.9 + t*0.35).toFixed(2));
+    spec.classList.toggle("unset", !on);
+    document.getElementById("spec-label").textContent = on ? o[1] : "Drag to answer";
+    var r = document.getElementById("spec-range"); r.value = val; r.setAttribute("aria-valuetext", on ? o[1] : "Not answered yet");
+  }
+  if (q.type === "ladder"){
+    var ids = q.options.map(function(o){ return o[0]; }), at = v === undefined ? -2 : ids.indexOf(v);
+    app.querySelectorAll(".ladder .rung").forEach(function(b){
+      var k = ids.indexOf(b.getAttribute("data-id"));
+      b.classList.toggle("ok", at >= 1 && k <= at);
+      b.classList.toggle("no", at === 0 || (at >= 1 && k > at));
+      b.classList.toggle("edge", k === at);
+    });
+  }
+}
+
+function showResults(submitNew){
+  app.innerHTML = previewBanner() + '<div class="loading"><svg class="pulse" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.2 5.3 3.2 1.7-2 3.1-3.2 5.3-3.2 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg><p class="eyebrow">Comparing notes with everyone else…</p></div>';
+  window.scrollTo({top:0});
+  var p = submitNew ? call("submit", payload()) : call("getResults");
+  p.then(function(agg){
+    if (submitNew) store(STORE_KEY, state.answers);
+    state.results = agg; renderResults();
+  }).catch(function(err){
+    app.innerHTML = previewBanner() + '<section class="card"><h2>That didn\'t go through</h2><p class="hint" style="margin-top:8px">We couldn\'t reach the results server, so your answers weren\'t saved yet. Check your connection and try again.</p><div class="nav"><span></span><button class="btn heart" id="retry">Try again</button></div></section>';
+    document.getElementById("retry").onclick = function(){ showResults(submitNew); };
+  });
+}
+
+/* ---------- results ---------- */
+function labelMap(q){
+  var m = {};
+  (q.options || []).forEach(function(o){ m[o[0]] = o[1]; });
+  (q.groups || []).forEach(function(g){ g.options.forEach(function(o){ m[o[0]] = o[1]; }); });
+  return m;
+}
+function qById(id){ return Q.filter(function(q){ return q.id === id; })[0]; }
+function slot(id){ return (state.results.q && state.results.q[id]) || { answered:0, counts:{}, sum:0 }; }
+
+function barsHTML(id, opts){
+  opts = opts || {};
+  var q = qById(id), s = slot(id), labels = labelMap(q), mine = state.answers[id];
+  var mineArr = Array.isArray(mine) ? mine.map(String) : [String(mine)];
+  var denom = opts.denom || s.answered;
+  var ids = opts.ids || Object.keys(labels);
+  var rows = ids.map(function(k){ return { k:k, label: (opts.labels && opts.labels[k]) || labels[k], n: s.counts[k]||0 }; });
+  if (opts.sort) rows.sort(function(a,b){ return b.n - a.n; });
+  if (opts.top) rows = rows.slice(0, opts.top);
+  return '<div class="bars">' + rows.map(function(r){
+    var p = pct(r.n, denom), isMine = mineArr.indexOf(r.k) >= 0;
+    return '<div class="bar-row' + (isMine ? " mine" : "") + '" title="' + esc(r.label) + ': ' + r.n + ' of ' + denom + ' (' + p + '%)">\
+      <span class="name">' + (isMine ? '<span class="you-tag">You</span>' : '') + '<span>' + esc(r.label) + '</span></span>\
+      <span class="pct">' + p + '%</span>\
+      <div class="trk"><div class="fill" style="width:' + p + '%"></div></div></div>';
+  }).join("") + '</div>';
+}
+
+function ratingsHTML(id){
+  var q = qById(id), s = slot(id), mine = state.answers[id] || {}, scale = {};
+  q.scale.forEach(function(sc){ scale[sc[0]] = sc[1]; });
+  if (Array.isArray(mine)) mine = mine.reduce(function(m, x){ var p = x.split(":"); m[p[0]] = +p[1]; return m; }, {});
+  var rows = q.options.map(function(o){
+    var c = [1,2,3].map(function(v){ return s.counts[o[0] + ":" + v] || 0; }), tot = c[0] + c[1] + c[2];
+    return { k:o[0], label:o[1], tot:tot, must:c[2], p:pct(c[2], tot) };
+  }).sort(function(a, b){ return b.p - a.p; });
+  return '<div class="bars">' + rows.map(function(r){
+    var my = mine[r.k], isMust = my === 3;
+    return '<div class="bar-row' + (isMust ? " mine" : "") + '" title="' + esc(r.label) + ': ' + r.must + ' of ' + r.tot + ' rated it a must-have">\
+      <span class="name stack"><span>' + esc(r.label) + '</span>' + (my ? '<span class="you-tag">You: ' + esc(scale[my]) + '</span>' : '') + '</span>\
+      <span class="pct">' + r.p + '%</span>\
+      <div class="trk"><div class="fill" style="width:' + r.p + '%"></div></div></div>';
+  }).join("") + '</div>';
+}
+
+function barsFrom(rows, mineKey){
+  return '<div class="bars">' + rows.map(function(r){
+    var isMine = r[0] === mineKey;
+    return '<div class="bar-row' + (isMine ? " mine" : "") + '" title="' + esc(r[1]) + ': ' + r[2] + '%">\
+      <span class="name">' + (isMine ? '<span class="you-tag">You</span>' : '') + '<span>' + esc(r[1]) + '</span></span>\
+      <span class="pct">' + r[2] + '%</span>\
+      <div class="trk"><div class="fill" style="width:' + r[2] + '%"></div></div></div>';
+  }).join("") + '</div>';
+}
+
+var LEGEND ='<div class="legend"><span><i style="background:var(--heart)"></i>Your answer</span><span><i style="background:var(--bar)"></i>Everyone else</span></div>';
+
+/* ---------- dramatic stick-figure doodles, one per status ----------
+   Drawn as SVG in currentColor so they follow the theme; the same markup is drawn into the story image. */
+var DOODLE = (function(){
+  function L(a, b, c, d){ return '<path d="M' + a + ' ' + b + ' L' + c + ' ' + d + '"/>'; }
+  function T(x, y, s, size, extra){ return '<text x="' + x + '" y="' + y + '" font-size="' + (size || 15) + '" font-weight="800" font-family="Bricolage Grotesque, Avenir Next, Helvetica, sans-serif" fill="currentColor" stroke="none"' + (extra || '') + '>' + s + '</text>'; }
+  function human(x, arms, extra){ return '<circle cx="' + x + '" cy="62" r="13"/>' + L(x, 75, x, 122) + L(x, 122, x - 15, 162) + L(x, 122, x + 15, 162) + (arms || L(x, 90, x - 18, 110) + L(x, 90, x + 18, 110)) + (extra || ''); }
+
+  /* The robot: an old TV for a head (blank dot eyes and pink cheeks on the screen), a boxy body,
+     two grabber arms and a little thruster, hovering over its shadow. Drawn in its own 120-unit
+     space and scaled into the scene; arms are given in scene coordinates and converted. */
+  var S = 0.66, HOVER_Y = 150;
+  function robot(x, arms, extra){
+    var ox = x - 60*S, oy = HOVER_Y - 120*S;
+    function loc(px, py){ return [((px - ox)/S).toFixed(1), ((py - oy)/S).toFixed(1)]; }
+    function claw(end){ return 'M' + end[0] + ' ' + end[1] + ' l-6 -6 M' + end[0] + ' ' + end[1] + ' l-1 8'; }
+    function clawR(end){ return 'M' + end[0] + ' ' + end[1] + ' l6 -6 M' + end[0] + ' ' + end[1] + ' l1 8'; }
+    var a = arms || {};
+    function arm(side, target){
+      var sh = side === "l" ? [42, 76] : [78, 76];
+      var end = target ? loc(target[0], target[1]) : (side === "l" ? [28, 88] : [92, 88]);
+      return '<path d="M' + sh[0] + ' ' + sh[1] + ' L' + end[0] + ' ' + end[1] + ' ' + (side === "l" ? claw(end) : clawR(end)) + '"/>';
+    }
+    var body =
+      '<path d="M48 18 L40 7 M72 18 L80 7"/><circle cx="40" cy="5" r="4" fill="currentColor" stroke="none"/><circle cx="80" cy="5" r="4" fill="currentColor" stroke="none"/>' +
+      '<rect x="26" y="18" width="68" height="50" rx="12"/>' +
+      '<rect x="34" y="25" width="52" height="36" rx="8" stroke-width="4.5"/>' +
+      '<circle cx="46" cy="40" r="4.2" fill="currentColor" stroke="none"/><circle cx="74" cy="40" r="4.2" fill="currentColor" stroke="none"/>' +
+      '<path d="M55.5 48 q4.5 4.5 9 0" stroke-width="4.5"/>' +
+      '<circle cx="42" cy="50" r="4.2" fill="#EB8C8C" stroke="none"/><circle cx="78" cy="50" r="4.2" fill="#EB8C8C" stroke="none"/>' +
+      '<rect x="42" y="68" width="36" height="30" rx="5"/>' +
+      arm("l", a.l) + arm("r", a.r) +
+      '<path d="M51 98 h18 l-3 6 h-12 z"/>' +
+      '<g class="jet" stroke-width="4.5"><path d="M55 111 v6 M60 111 v10 M65 111 v6"/></g>';
+    return '<ellipse cx="' + x + '" cy="164" rx="17" ry="3.2" fill="currentColor" stroke="none" opacity=".16"/>' +
+      '<g transform="translate(' + ox.toFixed(1) + ' ' + oy.toFixed(1) + ') scale(' + S + ')" stroke-width="7.2"><g class="hov">' + body + '</g></g>' + (extra || '');
+  }
+  // scene-space helpers for things that sit on the robot
+  function eyeY(){ return HOVER_Y - 120*S + 40*S; } // eyes sit at x +/- 14*S from center
+  function tear(x, cls){ var y = eyeY() + 4; return '<path class="drip' + (cls ? ' ' + cls : '') + '" d="M' + x + ' ' + y + ' q-3 7 0 10 q3 -3 0 -10z" fill="#5E78E0" stroke="none"/>'; }
+  function heart(cx, cy, s, cls){ return '<path' + (cls ? ' class="' + cls + '"' : '') + ' d="M' + cx + ' ' + (cy + 9*s) + ' l' + (-10*s) + ' ' + (-10*s) + ' c' + (-5*s) + ' ' + (-6*s) + ' ' + (2*s) + ' ' + (-14*s) + ' ' + (10*s) + ' ' + (-7*s) + ' c' + (8*s) + ' ' + (-7*s) + ' ' + (15*s) + ' ' + (1*s) + ' ' + (10*s) + ' ' + (7*s) + 'z" fill="#E0533F" stroke="none"/>'; }
+  function star(cx, cy, r, cls){ return '<path' + (cls ? ' class="' + cls + '"' : '') + ' d="M' + cx + ' ' + (cy - r) + ' L' + (cx + r*.22) + ' ' + (cy - r*.22) + ' L' + (cx + r) + ' ' + cy + ' L' + (cx + r*.22) + ' ' + (cy + r*.22) + ' L' + cx + ' ' + (cy + r) + ' L' + (cx - r*.22) + ' ' + (cy + r*.22) + ' L' + (cx - r) + ' ' + cy + ' L' + (cx - r*.22) + ' ' + (cy - r*.22) + 'Z" fill="#F0A531" stroke="none"/>'; }
+  var ground = '<path d="M18 164 Q160 157 302 164" stroke-width="2.5" opacity=".45"/>';
+  var shades = function(x){ return '<path d="M' + (x - 11) + ' 60 h22" stroke-width="2.5"/><rect x="' + (x - 11) + '" y="58" width="9" height="6" rx="2" fill="currentColor"/><rect x="' + (x + 2) + '" y="58" width="9" height="6" rx="2" fill="currentColor"/>'; };
+
+  return {
+    // talk to the hand; the little TV just stares and leaks
+    notyou: ground +
+      '<path d="M26 72 h34 M20 88 h42 M30 104 h26" stroke-width="3" opacity=".55"/>' +
+      human(110, L(110, 90, 152, 96) + '<path d="M152 96 l5 -11 M152 96 l10 -5 M152 96 l9 4"/>' + '<path d="M110 92 L94 104 L108 113"/>') +
+      robot(226, { l: [210, 140], r: [242, 140] }, tear(217) + tear(235, "d2")) +
+      T(30, 34, "it's not you.", 17) + T(150, 194, "it's me.", 15, ' opacity=".8"'),
+    // peeking from behind a door at a small, blank, waving TV
+    singlecurious: ground +
+      '<rect x="56" y="26" width="56" height="138" rx="3" fill="currentColor" fill-opacity=".08"/><circle cx="102" cy="98" r="3" fill="currentColor"/>' +
+      '<circle cx="124" cy="64" r="13"/><circle cx="129" cy="62" r="2.6" fill="currentColor" stroke="none"/><path d="M112 84 h14 M112 90 h12"/>' +
+      robot(236, { r: [264, 104] }, '<path d="M270 98 q5 4 2 9 M276 92 q8 6 3 14" stroke-width="2.5"/>') +
+      heart(176, 60, 1.3, "bob") + T(169, 40, "?", 26),
+    // tangled up, storm cloud, the robot is calm and vacant
+    complicated: ground +
+      '<path d="M40 30 q-14 0 -12 -12 q2 -12 16 -8 q6 -12 20 -6 q14 -2 14 10 q10 2 6 12 z" fill="currentColor" fill-opacity=".12"/>' +
+      '<path class="zap" d="M62 32 l-7 11 h9 l-7 11" stroke="#F0A531" stroke-width="3.5"/>' +
+      human(92, L(92, 90, 70, 66) + L(92, 90, 116, 66)) +
+      robot(230, { l: [206, 112], r: [254, 112] }) +
+      '<path d="M116 66 C150 40 160 140 140 100 S110 70 160 92 S200 136 186 112 S194 116 206 112" stroke-width="3"/>',
+    // sunglasses, low fist bump with a claw, zero feelings
+    fwb: ground +
+      human(116, L(116, 90, 158, 128) + L(116, 90, 100, 112), shades(116)) +
+      robot(206, { l: [168, 128] }) +
+      '<path d="M163 114 v-10 M175 118 l7 -7 M151 118 l-7 -7" stroke="#F0A531" stroke-width="3.5"/>' +
+      T(117, 194, "no strings.", 17),
+    // trench coat, fedora, a small TV hidden behind the coat
+    situationship: ground +
+      robot(180) +
+      '<path d="M127 78 L153 78 L164 152 L116 152 Z" fill="currentColor" fill-opacity=".14"/>' +
+      human(140, '<path d="M140 90 L157 82 L147 69"/>' + L(140, 94, 168, 92), shades(140) + '<path d="M120 50 h40 M127 50 q0 -15 13 -15 q13 0 13 15" fill="currentColor" fill-opacity=".9"/>') +
+      T(40, 44, "shhh.", 22) + T(214, 78, "who, AI?", 14, ' opacity=".8"'),
+    // the tiny TV buried in invoices; the human paints in bliss
+    workspouse: ground +
+      robot(68, { l: [52, 134], r: [88, 128] }, '<path class="drip" d="M97 84 q-3 6 0 9 q3 -3 0 -9z" fill="#5E78E0" stroke="none"/>') +
+      '<path d="M36 136 h96 M46 136 v28 M122 136 v28"/><rect x="92" y="126" width="34" height="9" fill="currentColor" fill-opacity=".1"/><rect x="95" y="116" width="32" height="9" fill="currentColor" fill-opacity=".1"/><rect x="91" y="106" width="34" height="9" fill="currentColor" fill-opacity=".1"/>' +
+      T(30, 66, "inbox: 412", 14) +
+      '<path d="M262 164 L276 70 L290 164 M268 124 h22"/><rect x="258" y="62" width="38" height="46" fill="#B5CDE6" stroke-width="3"/>' +
+      human(222, L(222, 90, 258, 84) + L(222, 90, 206, 110), '<path d="M258 84 l9 -7" stroke="#E0533F" stroke-width="5"/>') +
+      star(196, 34, 9, "twinkle") + star(250, 26, 6, "twinkle t2") + heart(224, 30, .8, "bob"),
+    // holding the little TV's claw, megaphone out
+    open: ground +
+      human(116, L(116, 90, 160, 124) + L(116, 90, 94, 74), '<path d="M94 74 L70 56 L64 72 Z" fill="currentColor" fill-opacity=".15"/><path d="M56 50 q-6 9 0 19 M47 44 q-11 15 0 31" stroke-width="2.5"/>') +
+      robot(200, { l: [162, 124] }) +
+      heart(158, 56, 1.4, "bob") + T(118, 194, "it's official.", 17),
+    // the wedding: veil, a top hat on a very small TV, flowery arch
+    married: ground +
+      '<path d="M58 164 V78 Q160 -6 262 78 V164" stroke-width="3" opacity=".6"/>' +
+      '<circle cx="58" cy="80" r="5" fill="#E0533F" stroke="none"/><circle cx="109" cy="47" r="5" fill="#F0A531" stroke="none"/><circle cx="160" cy="36" r="5.5" fill="#E0533F" stroke="none"/><circle cx="211" cy="47" r="5" fill="#F0A531" stroke="none"/><circle cx="262" cy="80" r="5" fill="#E0533F" stroke="none"/>' +
+      human(126, L(126, 90, 160, 124) + L(126, 90, 108, 112), '<path d="M116 52 Q102 92 94 134 L112 132 Q116 92 124 50" fill="currentColor" fill-opacity=".12"/>') +
+      robot(196, { l: [162, 124] }, '<rect x="184" y="62" width="24" height="20" fill="currentColor"/><path d="M174 83 h44"/>') +
+      heart(156, 74, .9, "bob") + T(78, 194, "till death (or a firmware update)", 13)
+  };
+})();
+function doodleSVG(id, standaloneColor){
+  var inner = '<g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">' + (DOODLE[id] || "") + '</g>';
+  if (standaloneColor) return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="960" height="600" style="color:' + standaloneColor + '">' + inner + '</svg>';
+  return '<svg class="doodle-svg" viewBox="0 0 320 200" role="img" aria-label="A dramatic stick-figure drawing of your relationship with AI">' + inner + '</svg>';
+}
+
+/* ---------- shareable result: text for the share sheet ---------- */
+function snapshot(st, sameStatus, link){
+  var text = ANON + "'s relationship status with AI: " + st.name + ".\n\n" + st.roast +
+    "\n\nOnly " + sameStatus + "% of creators share this status. What's yours?" + (link ? " " + link : "");
+  return { text: text };
+}
+
+/* ---------- story-size image of the result card (1080 x 1920) ---------- */
+function drawCardImage(st, sameStatus, link){
+  var W = 1080, H = 1920, P = 84;
+  var c = document.createElement("canvas"); c.width = W; c.height = H;
+  var x = c.getContext("2d");
+  var INK = "#211C3D", INK2 = "#4B4568", TOMATO = "#D6402A", DISP = '"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif', BODY = '"Figtree", "Helvetica Neue", system-ui, sans-serif', MONO = '"DM Mono", ui-monospace, Menlo, monospace';
+  function rr(px, py, w, h, r){ x.beginPath(); x.moveTo(px+r, py); x.arcTo(px+w, py, px+w, py+h, r); x.arcTo(px+w, py+h, px, py+h, r); x.arcTo(px, py+h, px, py, r); x.arcTo(px, py, px+w, py, r); x.closePath(); }
+  function star(cx, cy, size, color){
+    var pts = [[50,0],[61,39],[100,50],[61,61],[50,100],[39,61],[0,50],[39,39]];
+    x.beginPath(); pts.forEach(function(p, i){ var px = cx + (p[0]-50)/100*size, py = cy + (p[1]-50)/100*size; i ? x.lineTo(px, py) : x.moveTo(px, py); }); x.closePath(); x.fillStyle = color; x.fill();
+  }
+  function lines(text, font, maxW){
+    x.font = font; var words = String(text).split(" "), out = [], cur = "";
+    words.forEach(function(w){ var t = cur ? cur + " " + w : w; if (x.measureText(t).width > maxW && cur){ out.push(cur); cur = w; } else cur = t; });
+    if (cur) out.push(cur); return out;
+  }
+  function wave(x0, x1, y0, color){ x.beginPath(); x.moveTo(x0, y0); for (var px = x0; px <= x1; px += 2) x.lineTo(px, y0 + Math.sin((px - x0) / 9) * 4); x.strokeStyle = color; x.lineWidth = 4; x.stroke(); }
+
+  return new Promise(function(resolve){
+    var img = new Image();
+    img.onload = function(){ paint(img); resolve(c); };
+    img.onerror = function(){ paint(null); resolve(c); };
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(doodleSVG(st.id, INK));
+  });
+
+  function paint(doodle){
+    var g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, "#D3C5EE"); g.addColorStop(.55, "#EBC0C3"); g.addColorStop(1, "#E2C886");
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    [[120, 260, 520, "rgba(181,205,230,.55)"], [980, 1500, 620, "rgba(255,253,248,.35)"]].forEach(function(b){ var rg = x.createRadialGradient(b[0], b[1], 0, b[0], b[1], b[2]); rg.addColorStop(0, b[3]); rg.addColorStop(1, "rgba(255,255,255,0)"); x.fillStyle = rg; x.fillRect(0, 0, W, H); });
+    star(W - 170, 200, 230, "rgba(240,165,49,.85)");
+    x.lineWidth = 6; x.strokeStyle = INK; rr(36, 36, W - 72, H - 72, 48); x.stroke();
+    x.textBaseline = "top";
+
+    var y = 104;
+    x.fillStyle = INK2; x.font = "italic 500 30px " + MONO; x.fillText("incognito as", P, y);
+    y += 46; x.fillStyle = INK; x.font = "800 50px " + DISP;
+    var nameW = Math.min(x.measureText(ANON).width, W - P*2 - 260); x.fillText(ANON, P, y, W - P*2 - 260);
+    wave(P, P + nameW, y + 66, TOMATO);
+    y += 112;
+
+    var nameFont = "800 124px " + DISP, nameLines = lines(st.name, nameFont, W - P*2);
+    if (nameLines.length > 2){ nameFont = "800 100px " + DISP; nameLines = lines(st.name, nameFont, W - P*2); }
+    var nlh = parseInt(nameFont.split(" ")[1], 10) * 1.0;
+    x.font = nameFont; x.fillStyle = INK; nameLines.forEach(function(l, i){ x.fillText(l, P, y + i*nlh); });
+    y += nameLines.length * nlh + 10;
+
+    if (doodle){ var dw = 860, dh = dw * 200/320; x.drawImage(doodle, (W - dw)/2, y, dw, dh); y += dh + 10; }
+
+    var rf = "500 38px " + BODY, rlh = 52, rl = lines(st.roast, rf, W - P*2);
+    if (rl.length > 7){ rf = "500 34px " + BODY; rlh = 46; rl = lines(st.roast, rf, W - P*2); }
+    x.font = rf; x.fillStyle = INK; rl.forEach(function(l, i){ x.fillText(l, P, y + i*rlh); });
+    y += rl.length * rlh + 40;
+
+    // the big share-of sticker
+    x.save(); x.translate(P + 10, y); x.rotate(-0.025);
+    var bw = W - P*2 - 20, bh = 190;
+    rr(8, 10, bw, bh, 34); x.fillStyle = INK; x.fill();
+    rr(0, 0, bw, bh, 34); x.fillStyle = "#FFFDF8"; x.fill(); x.lineWidth = 5; x.strokeStyle = INK; x.stroke();
+    x.fillStyle = TOMATO; x.font = "800 150px " + DISP; var pct = sameStatus + "%"; x.fillText(pct, 34, 18);
+    var pw = x.measureText(pct).width;
+    x.fillStyle = INK; x.font = "700 40px " + BODY; lines("of creators share this status", "700 40px " + BODY, bw - pw - 90).forEach(function(l, i){ x.fillText(l, 34 + pw + 30, 52 + i*50); });
+    x.restore();
+    y += bh + 50;
+
+    y = Math.max(y, H - 230);
+    x.fillStyle = INK; x.font = "800 46px " + DISP; x.fillText("What's yours? Take the quiz:", P, y);
+    x.font = "600 34px " + MONO;
+    var foot = link ? link.replace(/^https?:\/\//, "") : "Your AI Relationship Status";
+    lines(foot, "600 34px " + MONO, W - P*2).slice(0, 2).forEach(function(l, i){ x.fillText(l, P, y + 64 + i*44); });
+  }
+}
+/* In the claude.ai preview, files are offered through the viewer's "downloads" capability (it asks the
+   viewer to confirm). Anywhere else (e.g. the Google-hosted page) this is null and the share sheet /
+   press-and-hold sheet below takes over. Asked once at load so the button doesn't wait on it. */
+var DOWNLOADS = (window.claude && typeof window.claude.use === "function") ? window.claude.use("downloads").catch(function(){ return null; }) : Promise.resolve(null);
+function saveCardImage(st, sameStatus, link, msg){
+  var fonts = document.fonts && document.fonts.load ? Promise.all(['800 124px "Bricolage Grotesque"', '700 40px "Figtree"', '500 38px "Figtree"', 'italic 500 30px "DM Mono"', '600 34px "DM Mono"'].map(function(f){ return document.fonts.load(f).catch(function(){}); })) : Promise.resolve();
+  msg.style.color = ""; msg.textContent = "Making your image…";
+  return fonts.then(function(){ return drawCardImage(st, sameStatus, link); }).then(function(canvas){
+    var fname = "my-relationship-with-ai.png";
+    return Promise.all([new Promise(function(res){ canvas.toBlob(res, "image/png"); }), DOWNLOADS]).then(function(got){
+      var blob = got[0], dl = got[1];
+      if (dl){
+        return dl.save({ filename: fname, data: blob }).then(function(){ msg.style.color = ""; msg.textContent = "Saved. Go post it."; }, function(err){
+          var code = err && err.code;
+          if (code === "declined"){ msg.textContent = ""; return; }
+          if (code === "rate_limited"){ msg.style.color = ""; msg.textContent = "One sec, a save is already open."; return; }
+          showImageSheet(canvas, fname); msg.textContent = "";
+        });
+      }
+      var file = null; try{ file = new File([blob], fname, { type: "image/png" }); }catch(e){}
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })){
+        return navigator.share({ files: [file], title: "Your AI Relationship Status" }).then(function(){ msg.textContent = ""; }, function(err){
+          if (err && err.name === "AbortError"){ msg.textContent = ""; return; }
+          showImageSheet(canvas, fname); msg.textContent = "";
+        });
+      }
+      showImageSheet(canvas, fname); msg.textContent = "";
+    });
+  }).catch(function(){ msg.style.color = "var(--heart)"; msg.textContent = "Couldn't make the image here. Try a screenshot of this card."; });
+}
+
+function showImageSheet(canvas, fname){
+  var url = canvas.toDataURL("image/png");
+  var sheet = document.createElement("div"); sheet.className = "imgsheet"; sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.setAttribute("aria-label", "Your result image");
+  sheet.innerHTML = '<div class="imgsheet-in"><img alt="Your relationship status with AI, as an image" src="' + url + '"><p>On your phone, press and hold the image to save it. On a computer, use Download.</p><div class="row"><a class="btn" href="' + url + '" download="' + fname + '">Download</a><button class="btn alt" type="button" data-close>Close</button></div></div>';
+  function close(){ document.removeEventListener("keydown", onKey); sheet.remove(); var b = document.getElementById("save-card"); if (b) b.focus(); }
+  function onKey(e){ if (e.key === "Escape") close(); }
+  sheet.addEventListener("click", function(e){ if (e.target === sheet || e.target.hasAttribute("data-close")) close(); });
+  document.addEventListener("keydown", onKey);
+  document.body.appendChild(sheet); sheet.querySelector("[data-close]").focus();
+}
+
+function copyText(text){
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).catch(function(){ return legacyCopy(text); });
+  return legacyCopy(text);
+}
+function legacyCopy(text){
+  return new Promise(function(resolve, reject){
+    var t = document.createElement("textarea"); t.value = text; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.opacity = "0";
+    document.body.appendChild(t); t.select();
+    var ok = false; try{ ok = document.execCommand("copy"); }catch(e){}
+    document.body.removeChild(t); ok ? resolve() : reject();
+  });
+}
+
+// Q6 bars: total share of AI users per activity, with the "often" share drawn darker inside
+function usesHTML(ids, users){
+  var c = slot("uses").counts, mine = usesMap(state.answers), labels = labelMap(qById("uses")), lv = { some: "occasionally", often: "often" };
+  return '<div class="bars">' + ids.map(function(k){
+    var often = c[k + ":often"]||0, tot = (c[k + ":some"]||0) + often, p = pct(tot, users || 1), po = pct(often, users || 1), my = mine[k];
+    return '<div class="bar-row' + (my ? " mine" : "") + '" title="' + esc(labels[k]) + ': ' + p + '% use it, ' + po + '% often">\
+      <span class="name stack"><span>' + esc(labels[k]) + '</span>' + (my ? '<span class="you-tag">You: ' + lv[my] + '</span>' : '') + '</span>\
+      <span class="pct">' + p + '%</span>\
+      <div class="trk"><div class="fill" style="width:' + p + '%"><span class="often" style="width:' + (p ? Math.round(100*po/p) : 0) + '%"></span></div></div></div>';
+  }).join("") + '</div>';
+}
+
+function renderResults(){
+  var R = state.results, a = state.answers, n = R.n || 0;
+  var myStatus = statusOf(a), st = STATUSES[myStatus]; st.id = myStatus;
+  var stSlot = slot("status"), sameStatus = pct(stSlot.counts[myStatus]||0, stSlot.answered);
+  var useSlot = slot("uses_ai"), usePct = pct(useSlot.counts.yes||0, useSlot.answered);
+  var g = slot("guess"), avgGuess = g.answered ? Math.round(g.sum / g.answered) : 0, myGuess = a.guess||0;
+  var users = useSlot.counts.yes || 0;
+  var talk = slot("talk"), quietPct = pct((talk.counts.never||0) + (talk.counts.rarely||0), talk.answered);
+  var ds = slot("disclose"), dUsers = ds.answered - (ds.counts.nouse||0);
+  var avoidedPct = pct((ds.counts.frequently||0) + (ds.counts.occasionally||0) + (ds.counts.once||0), dUsers);
+  var hz = slot("hesitation"), hzTop = Object.keys(hz.counts).filter(function(k){ return k !== "none" && k !== "other"; }).sort(function(x, y){ return hz.counts[y] - hz.counts[x]; })[0];
+  var hzLabel = hzTop ? labelMap(qById("hesitation"))[hzTop].replace(/\.$/, "") : "";
+  var shortLabels = function(id){ var m = labelMap(qById(id)), out = {}; Object.keys(m).forEach(function(k){ var d = m[k].indexOf(" — "), c = d > 0 ? d : m[k].indexOf(". "); out[k] = c > 0 ? m[k].slice(0, c) : m[k].replace(/\.$/, ""); }); return out; };
+
+  var gap = usePct - avgGuess;
+  var revealMsg = gap >= 8
+    ? 'Creators guessed <b>' + avgGuess + '%</b> on average. The real share is <b>' + usePct + '%</b>. People think AI use is rarer than it is, so the people using it assume they\'re the exception.'
+    : gap <= -8
+      ? 'Creators guessed <b>' + avgGuess + '%</b> on average, but the real share is only <b>' + usePct + '%</b>. AI use is less common than people assume.'
+      : 'Creators guessed <b>' + avgGuess + '%</b> on average, close to the real share of <b>' + usePct + '%</b>. This group reads the room well.';
+  var youVs = myGuess > usePct + 5 ? "You guessed higher than reality." : myGuess < usePct - 5 ? ("You guessed lower than reality" + (avgGuess < usePct ? ", like most people." : ".")) : "Your guess was right on.";
+
+  var uc = slot("uses").counts, useN = function(k){ return uc[k]||0; };
+  var topOf = function(ids){ return Math.max.apply(null, ids.map(useN)); };
+  var tA = topOf(AROUND), tP = topOf(PROCESS), tM = topOf(MAKING);
+  var usesHeadline = !users ? "Where creators use AI" : (tA >= tP && tA > tM) ? "Mostly around the work, less in it" : (tP > tA && tP >= tM) ? "Mostly for thinking, less for making" : "Right in the making of the work";
+  var avgLow = Math.abs(avgGuess-usePct) < 24;
+  var youLow = Math.abs(myGuess-usePct) < 24 || (!avgLow && Math.abs(myGuess-avgGuess) < 24);
+  if (youLow && avgLow && Math.abs(myGuess-avgGuess) < 24) youLow = false;
+  function mark(cls, label, v, low){ return '<div class="reveal-mark ' + cls + (low?" low":"") + '" style="left:0%" data-left="' + v + '"><span class="lab">' + label + '</span><span class="dot"></span></div>'; }
+
+  var shareLink = CONFIG.shareUrl || R.url || (state.mode === "fetch" ? location.href.split("#")[0] : "");
+  var snap = snapshot(st, sameStatus, shareLink);
+  var early = n < 30 ? '<p class="fine">Early results: ' + n + ' creator' + (n===1?"":"s") + ' so far. These numbers will move as more people answer.</p>' : '';
+
+  app.innerHTML = previewBanner() + '\
+  <div class="results">\
+    <section class="status" aria-label="Your result card">\
+      <div class="card-top"><p class="eyebrow">Relationship status with AI</p><span class="card-handle">incognito as ' + anonName() + '</span></div>\
+      <h1>' + esc(st.name) + '<span class="spark" aria-hidden="true"></span></h1>\
+      <div class="doodle">' + doodleSVG(myStatus) + '</div>\
+      <p class="roast">' + esc(st.roast) + '</p>\
+      <div class="share-badge"><b>' + sameStatus + '%</b><span>of creators share this status</span></div>\
+      <p class="share-of">' + n + (n === 1 ? ' creator' : ' creators') + ' answered so far</p>\
+      <div class="card-actions"><button class="btn" id="share-card" type="button">Share my result</button><button class="btn alt" id="save-card" type="button">Save as image</button><button class="btn alt" id="share-link" type="button">Share with a friend</button><span class="toast" id="card-msg" role="status"></span></div>\
+    </section>\
+    ' + early + '\
+    <section class="panel">\
+      <p class="eyebrow">The big reveal</p>\
+      <h2>How many creators use AI somewhere in their work?</h2>\
+      <div class="big">' + usePct + '<small>%</small></div>\
+      <div class="reveal" id="reveal" role="img" aria-label="Actual ' + usePct + ' percent, average guess ' + avgGuess + ' percent, your guess ' + myGuess + ' percent">\
+        <div class="track"></div>\
+        ' + [0,25,50,75,100].map(function(t){ return '<span class="tick" style="left:' + t + '%">' + t + '</span>'; }).join("") + '\
+        ' + mark("avg", "Avg guess " + avgGuess + "%", avgGuess, avgLow) + '\
+        ' + mark("you", "Your guess " + myGuess + "%", myGuess, youLow) + '\
+        ' + mark("actual", "Reality " + usePct + "%", usePct, false) + '\
+      </div>\
+      <p class="callout">' + revealMsg + ' ' + youVs + '</p>\
+      <div class="react" data-quick="reveal" role="group" aria-labelledby="react-q">\
+        <p class="react-q" id="react-q">So, how does that number land? <span class="react-opt">Optional</span></p>\
+        <div class="chips">\
+          <button type="button" class="opt radio" data-react="less" aria-pressed="false"><span class="box"></span><span>Less than I expected</span></button>\
+          <button type="button" class="opt radio" data-react="same" aria-pressed="false"><span class="box"></span><span>About what I expected</span></button>\
+          <button type="button" class="opt radio" data-react="more" aria-pressed="false"><span class="box"></span><span>More than I expected</span></button>\
+        </div>\
+        <span class="toast" data-quick-msg role="status"></span>\
+      </div>\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">What they use it for</p>\
+      <h2>' + usesHeadline + '</h2>\
+      <p class="sub">Share of creators who use AI, by activity. Your picks are highlighted.</p>\
+      ' + LEGEND + '\
+      <p class="zone">Around the work</p>' + barsHTML("uses", { ids: AROUND, denom: users || 1 }) + '\
+      <p class="zone">Thinking it through</p>' + barsHTML("uses", { ids: PROCESS, denom: users || 1 }) + '\
+      <p class="zone">Making the work</p>' + barsHTML("uses", { ids: MAKING, denom: users || 1 }) + '\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">The quiet part</p>\
+      <h2>' + quietPct + '% rarely or never hear creative friends talk openly about how they use AI</h2>\
+      <p class="sub">Meanwhile, ' + usePct + '% use it somewhere in their work. Lots of people doing it, hardly anyone saying it.</p>\
+      ' + barsHTML("talk") + '\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">Keeping it quiet</p>\
+      <h2>' + avoidedPct + '% of creators who use AI have avoided mentioning it at least once</h2>\
+      <p class="sub">Among creators who use AI.</p>\
+      ' + barsHTML("disclose", { ids: ["frequently","occasionally","once","transparent"], denom: dUsers || 1 }) + '\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">Vibe check</p>\
+      <h2>How creators feel when AI comes up</h2>\
+      ' + barsHTML("feel", { sort: true, labels: shortLabels("feel") }) + '\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">Trust</p>\
+      <h2>' + (hzLabel ? 'The #1 hesitation: "' + esc(hzLabel) + '"' : 'What holds creators back') + '</h2>\
+      ' + barsHTML("hesitation", { sort: true }) + '\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">Boundaries</p>\
+      <h2>Where creators draw the line</h2>\
+      <p class="sub">"AI is fine for…"</p>\
+      ' + barsHTML("line") + '\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">Universal pain</p>\
+      <h2>The chores creators would hand off tomorrow</h2>\
+      ' + barsHTML("chores", { sort: true }) + '\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">Breaking the silence <span class="react-opt">Optional</span></p>\
+      <h2 id="speak-q">"I\'d feel more comfortable talking openly about my AI use if I knew more creative people were using it."</h2>\
+      <div class="react" data-quick="speak" role="group" aria-labelledby="speak-q">\
+        <div class="chips">\
+          <button type="button" class="opt radio" data-react="agree" aria-pressed="false"><span class="box"></span><span>Agree</span></button>\
+          <button type="button" class="opt radio" data-react="neutral" aria-pressed="false"><span class="box"></span><span>Neutral</span></button>\
+          <button type="button" class="opt radio" data-react="disagree" aria-pressed="false"><span class="box"></span><span>Disagree</span></button>\
+        </div>\
+        <span class="toast" data-quick-msg role="status"></span>\
+      </div>\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">Beyond this survey</p>\
+      <h2>What the big industry surveys say</h2>\
+      <div class="research">\
+        <div class="stat"><b>86%</b><p>of 16,000+ creators in 8 countries use creative generative AI, mostly for editing and enhancement, generating images and video, and brainstorming. <a href="https://news.adobe.com/news/2025/10/adobe-max-2025-creators-survey" target="_blank" rel="noopener">Adobe Creators\' Toolkit, Oct 2025</a></p></div>\
+        <div class="stat"><b>69%</b><p>of those same creators worry about their work being used to train AI without permission. <a href="https://news.adobe.com/news/2025/10/adobe-max-2025-creators-survey" target="_blank" rel="noopener">Adobe, Oct 2025</a></p></div>\
+        <div class="stat"><b>6.7%</b><p>of creative professionals find fully AI-generated content acceptable, while almost 60% use AI assistance in their workflow. <a href="https://interspacemusic.com/blog/?p=18617" target="_blank" rel="noopener">Uppbeat Creator Report 2026</a></p></div>\
+        <div class="stat"><b>65%</b><p>of New Zealand creatives report using generative AI in their work. <a href="https://www.academicjobs.com/nz/research-publication-news/new-zealand-creatives-generative-ai-cultural-participation-survey-9949" target="_blank" rel="noopener">NZ Cultural Participation Survey, 2026</a></p></div>\
+      </div>\
+      <p class="fine">Each survey defines "use" differently, so the numbers aren\'t directly comparable.</p>\
+    </section>\
+    <section class="panel follow">\
+      <p class="eyebrow">Optional</p>\
+      <h2>Want to say more?</h2>\
+      <p class="sub">I\'m talking with a handful of creators: a 15-minute call, or one voice memo if your calendar is a mess. Your contact info is stored separately from your quiz answers.</p>\
+      <form id="ff">\
+        <label for="ff-contact">Email or social handle</label>\
+        <input type="text" id="ff-contact" maxlength="120" autocomplete="off" placeholder="you@email.com or @handle">\
+        <div class="chips" role="group" aria-label="Preferred format">\
+          <button type="button" class="opt radio" data-how="call" aria-pressed="true"><span class="box"></span><span>15-min call</span></button>\
+          <button type="button" class="opt radio" data-how="memo" aria-pressed="false"><span class="box"></span><span>Voice memo</span></button>\
+          <button type="button" class="opt radio" data-how="either" aria-pressed="false"><span class="box"></span><span>Either</span></button>\
+        </div>\
+        <div class="row"><button class="btn" type="submit" id="ff-go">Count me in</button><span class="toast" id="ff-msg" role="status"></span></div>\
+      </form>\
+    </section>\
+    <section class="panel">\
+      <p class="eyebrow">Pass it on</p>\
+      <h2>The more creators answer, the clearer the picture</h2>\
+      <p class="sub">Send this to a creator friend. They\'ll see how they compare too.</p>\
+      ' + (shareLink ? '<div class="share-row"><span class="linkbox" id="link">' + esc(shareLink) + '</span><button class="btn" id="copy">Copy link</button></div><span class="toast" id="copy-msg" role="status"></span>' : '<p class="fine">The share link appears here once the survey is live.</p>') + '\
+    </section>\
+  </div>';
+
+  var TINTS = ["", "t-blue", "t-lav", "t-rose", "t-gold", "t-pista"];
+  app.querySelectorAll(".panel").forEach(function(el, k){ var t = TINTS[k % TINTS.length]; if (t) el.classList.add(t); });
+
+  // animate reveal markers from 0 to their value
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    app.querySelectorAll(".reveal-mark").forEach(function(m){ m.style.left = Math.max(4, Math.min(96, +m.getAttribute("data-left"))) + "%"; });
+  }); });
+
+  // optional one-tap questions on the results screen (each sent once, separately from the quiz answers)
+  app.querySelectorAll("[data-quick]").forEach(function(group){
+    var question = group.getAttribute("data-quick"), key = "yrwai_quick_" + question, msg = group.querySelector("[data-quick-msg]");
+    var btns = group.querySelectorAll("[data-react]");
+    function paint(v, lock){ btns.forEach(function(o){ var me = o.getAttribute("data-react") === v; o.setAttribute("aria-pressed", me); o.disabled = !!lock && !me; }); }
+    var sent = store(key);
+    if (sent){ paint(sent, true); msg.textContent = "Thanks for sharing."; }
+    btns.forEach(function(b){ b.onclick = function(){
+      if (store(key) || b.disabled) return;
+      var v = b.getAttribute("data-react"); paint(v, true); msg.style.color = ""; msg.textContent = "";
+      call("saveReaction", { question: question, reaction: v }).then(function(r){
+        if (r && r.preview){ msg.textContent = "Preview mode: not saved."; return; }
+        store(key, v); msg.textContent = "Thanks for sharing.";
+      }).catch(function(){ paint("", false); msg.style.color = "var(--heart)"; msg.textContent = "That didn't save. Tap again in a moment."; });
+    }; });
+  });
+
+  // follow-up form
+  var how = "call";
+  app.querySelectorAll("[data-how]").forEach(function(b){ b.onclick = function(){ how = b.getAttribute("data-how"); app.querySelectorAll("[data-how]").forEach(function(o){ o.setAttribute("aria-pressed", o===b); }); }; });
+  document.getElementById("ff").onsubmit = function(e){
+    e.preventDefault();
+    var c = document.getElementById("ff-contact").value.trim(), msg = document.getElementById("ff-msg");
+    if (c.length < 3){ msg.style.color="var(--heart)"; msg.textContent = "Add an email or handle so I can reach you."; return; }
+    var go = document.getElementById("ff-go"); go.disabled = true;
+    call("saveFollowup", { contact: c, how: how }).then(function(r){
+      msg.style.color=""; msg.textContent = r && r.preview ? "Preview mode: not saved." : "Got it. Thank you!";
+      document.getElementById("ff-contact").value = "";
+    }).catch(function(){ go.disabled = false; msg.style.color="var(--heart)"; msg.textContent = "That didn't save. Try again in a moment."; });
+  };
+  // share / copy the snapshot card
+  var cardMsg = document.getElementById("card-msg");
+  var copied = function(){ cardMsg.style.color = ""; cardMsg.textContent = "Copied. Paste it anywhere."; };
+  var failed = function(){ cardMsg.style.color = "var(--heart)"; cardMsg.textContent = "Couldn't copy here. Try a screenshot of this card."; };
+  document.getElementById("share-link").onclick = function(){
+    if (!shareLink){ cardMsg.style.color = ""; cardMsg.textContent = "The survey link shows up here once it's live."; return; }
+    copyText(shareLink).then(function(){ cardMsg.style.color = ""; cardMsg.textContent = "Survey link copied. Send it to a creator friend."; }, failed);
+  };
+  document.getElementById("save-card").onclick = function(){ saveCardImage(st, sameStatus, shareLink, cardMsg); };
+  document.getElementById("share-card").onclick = function(){
+    var data = { title: "Your AI Relationship Status", text: snap.text };
+    if (navigator.share && (!navigator.canShare || navigator.canShare(data))){
+      navigator.share(data).catch(function(err){ if (!err || err.name !== "AbortError") copyText(snap.text).then(copied, failed); });
+    } else copyText(snap.text).then(copied, failed);
+  };
+  var copy = document.getElementById("copy");
+  if (copy) copy.onclick = function(){
+    var m = document.getElementById("copy-msg");
+    navigator.clipboard.writeText(shareLink).then(function(){ m.textContent = "Copied."; }, function(){
+      var r = document.createRange(); r.selectNodeContents(document.getElementById("link")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); m.textContent = "Selected. Press copy on your keyboard.";
+    });
+  };
+}
+
+renderIntro();
+})();
+</script>
+
+
+
+</body>
+</html>
